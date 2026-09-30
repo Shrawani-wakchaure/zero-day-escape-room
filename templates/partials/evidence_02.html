@@ -1,0 +1,96 @@
+<!-- EVIDENCE 02: THE SECURITY POLICY (CLOUD / IAM / AUTH) -->
+<div id="view-evidence_02" class="evidence-room-view" style="display:none;">
+  <div class="evidence-objective-banner">
+    <div class="objective-tag">SECURITY POLICY OBJECTIVE // STEP 2 OF 4</div>
+    <div class="objective-desc">
+      {{ puzzles.evidence_02.objective }}
+    </div>
+  </div>
+
+  <div class="iam-memo-wrapper">
+    <!-- Pinned metallic paperclip -->
+    <img src="/static/img/paperclip.svg" alt="Paperclip" class="memo-paperclip" />
+
+    <div style="font-size:0.75rem; color:#785f46; letter-spacing:1px; margin-bottom:8px; font-weight:bold;">
+      MEMORANDUM // FROM: OFFICE OF CYBERSECURITY COMPLIANCE
+    </div>
+
+    <div class="memo-audit-alert">
+      <strong>⚠️ COMPLIANCE VIOLATION (NIST 800-53 / LEAST PRIVILEGE):</strong>
+      Overly permissive authorization policy detected. The adversary leveraged unrestricted permissions to breach internal data storage. Remediate the policy below.
+    </div>
+
+    <div class="iam-editor-container">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:0.8rem; font-weight:bold; color:#4a3929;">ATTACHED POLICY DEFINITION (JSON):</span>
+        <button id="btn-fix-format" class="quick-fix-btn">Format JSON</button>
+      </div>
+
+      <textarea id="iam-policy-editor" class="policy-textarea" spellcheck="false">{{ puzzles.evidence_02.default_corrupted_policy }}</textarea>
+
+      <!-- Quick Guidance Patcher Buttons -->
+      <div class="iam-quick-fixes">
+        <span style="font-size:0.75rem; font-weight:bold; color:#5c4731; align-self:center;">AUDIT ACTIONS:</span>
+        <button id="btn-fix-principal" class="quick-fix-btn" title="Enforce authorized identity">
+          🔒 Enforce Authorized Identity
+        </button>
+        <button id="btn-fix-actions" class="quick-fix-btn" title="Restrict permissions to read-only">
+          🛡️ Enforce Least-Privilege Actions
+        </button>
+        <button id="btn-fix-resource" class="quick-fix-btn" title="Scope to secure target">
+          📦 Scope to Specific Resource
+        </button>
+      </div>
+
+      <!-- Live Compliance Checklist -->
+      <div class="iam-compliance-checklist">
+        <div id="check-principal" class="checklist-item">
+          <span class="checklist-icon">✖</span>
+          <span>Identity restricted from wildcard '*'</span>
+        </div>
+        <div id="check-action" class="checklist-item">
+          <span class="checklist-icon">✖</span>
+          <span>Least-privilege permissions enforced</span>
+        </div>
+        <div id="check-resource" class="checklist-item">
+          <span class="checklist-icon">✖</span>
+          <span>Target scoped to restricted vault / archive</span>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; margin-top:14px;">
+        <button id="btn-submit-iam" class="brass-btn" style="position:relative; z-index:10;">
+          <span>APPLY COMPLIANCE REMEDIATION</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dedicated Status & Endorsement Footer (No overlapping!) -->
+  <div class="evidence-status-footer">
+    <div class="evidence-dispatch-notes">
+      <div class="section-divider" style="margin-top:0;">
+        <div class="section-divider-title">AUDIT SPECIFICATIONS</div>
+        <div class="section-divider-line"></div>
+      </div>
+      <p style="font-size:0.84rem; line-height:1.6; color:#40352b;">
+        Never grant unrestricted wildcard access (<code>*</code>) in production infrastructure. Enforce explicit identity delegation and least-privilege scoping to satisfy security benchmarks.
+      </p>
+    </div>
+
+    <div class="evidence-stamp-slot">
+      <div id="stamp-box-evidence_02" class="stamp-slot">
+        {% if session_state.stamps.get('evidence_02') %}
+        <div class="rubber-stamp stamp-green stamp-angle-slight">
+          {{ session_state.stamps.evidence_02.text }}
+        </div>
+        {% else %}
+        <div class="rubber-stamp stamp-red stamp-angle-left">
+          UNPATCHED POLICY
+          <span class="stamp-subtext">COMPLIANCE FAILURE</span>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

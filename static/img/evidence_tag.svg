@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120" width="240" height="120">
+  <defs>
+    <filter id="tag-shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="3" dy="4" stdDeviation="3" flood-color="#19120e" flood-opacity="0.4"/>
+    </filter>
+    <linearGradient id="manila-paper" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#dfcfad"/>
+      <stop offset="50%" stop-color="#cfbe98"/>
+      <stop offset="100%" stop-color="#bfac84"/>
+    </linearGradient>
+    <linearGradient id="brass-grommet" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ecc977"/>
+      <stop offset="50%" stop-color="#8c6a21"/>
+      <stop offset="100%" stop-color="#4e380a"/>
+    </linearGradient>
+  </defs>
+  <!-- Manila tag body with clipped left corners -->
+  <polygon points="40,10 230,10 230,110 40,110 15,60" fill="url(#manila-paper)" stroke="#9c8760" stroke-width="1.5" filter="url(#tag-shadow)"/>
+  
+  <!-- Hole reinforcing ring (brown cardstock washer) -->
+  <circle cx="45" cy="60" r="14" fill="#a48c61" stroke="#7e6943" stroke-width="1"/>
+  <!-- Brass Eyelet / Grommet -->
+  <circle cx="45" cy="60" r="10" fill="url(#brass-grommet)"/>
+  <!-- Hole punch opening -->
+  <circle cx="45" cy="60" r="6" fill="#2c221e"/>
+  
+  <!-- Twine string loop trailing to the left -->
+  <path d="M 45,60 C 25,50 10,75 -20,40" fill="none" stroke="#756247" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M 45,60 C 30,70 5,85 -25,90" fill="none" stroke="#604f36" stroke-width="2" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="brass-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#dfb76c"/>
+      <stop offset="50%" stop-color="#947128"/>
+      <stop offset="100%" stop-color="#594212"/>
+    </linearGradient>
+    <linearGradient id="wood-handle" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4d2f1d"/>
+      <stop offset="50%" stop-color="#2d170b"/>
+      <stop offset="100%" stop-color="#140a04"/>
+    </linearGradient>
+    <linearGradient id="glass-lens" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.45"/>
+      <stop offset="40%" stop-color="#b8e2f2" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#1d6682" stop-opacity="0.1"/>
+    </linearGradient>
+  </defs>
+  <!-- Glass lens -->
+  <circle cx="40" cy="40" r="28" fill="url(#glass-lens)" stroke="url(#brass-grad)" stroke-width="6"/>
+  <circle cx="40" cy="40" r="27" fill="none" stroke="#ffffff" stroke-width="1.2" opacity="0.6"/>
+  <!-- Brass collar -->
+  <rect x="58" y="58" width="10" height="6" transform="rotate(45 58 58)" fill="url(#brass-grad)"/>
+  <!-- Wooden Handle -->
+  <rect x="62" y="62" width="40" height="8" rx="4" transform="rotate(45 62 62)" fill="url(#wood-handle)" stroke="#1a0c05" stroke-width="1"/>
+  <!-- Handle brass end-cap -->
+  <circle cx="92" cy="92" r="5" fill="url(#brass-grad)"/>
+  <!-- Lens specular reflection -->
+  <path d="M 24,30 A 20,20 0 0,1 42,20" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.75"/>
+</svg>

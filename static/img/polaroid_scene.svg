@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 190" width="160" height="190">
+  <defs>
+    <filter id="polaroid-shadow" x="-15%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="3" dy="5" stdDeviation="4" flood-color="#140e0b" flood-opacity="0.5"/>
+    </filter>
+    <linearGradient id="photo-vignette" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1f1a16"/>
+      <stop offset="40%" stop-color="#0a0807"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- White Polaroid Photo Paper with slight sepia aging -->
+  <rect x="5" y="5" width="150" height="180" rx="3" fill="#eae4d3" stroke="#ccc4b0" stroke-width="1" filter="url(#polaroid-shadow)"/>
+  
+  <!-- Photo Area (Square) -->
+  <rect x="15" y="15" width="130" height="130" fill="url(#photo-vignette)"/>
+  
+  <!-- Server Rack Illustration in Photo -->
+  <g transform="translate(15, 15)">
+    <!-- Rack frame -->
+    <rect x="25" y="15" width="80" height="100" fill="#15171a" stroke="#2c3036" stroke-width="1.5"/>
+    <!-- Rack units -->
+    <line x1="30" y1="30" x2="100" y2="30" stroke="#25292f" stroke-width="1"/>
+    <line x1="30" y1="45" x2="100" y2="45" stroke="#25292f" stroke-width="1"/>
+    <line x1="30" y1="60" x2="100" y2="60" stroke="#25292f" stroke-width="1"/>
+    <line x1="30" y1="75" x2="100" y2="75" stroke="#25292f" stroke-width="1"/>
+    <line x1="30" y1="90" x2="100" y2="90" stroke="#25292f" stroke-width="1"/>
+    <line x1="30" y1="105" x2="100" y2="105" stroke="#25292f" stroke-width="1"/>
+    
+    <!-- LED Indicators (Green normal, Red breached) -->
+    <circle cx="35" cy="37" r="1.5" fill="#2fe065" opacity="0.8"/>
+    <circle cx="40" cy="37" r="1.5" fill="#2fe065" opacity="0.8"/>
+    <circle cx="45" cy="37" r="1.5" fill="#2fe065" opacity="0.8"/>
+    
+    <circle cx="35" cy="52" r="1.5" fill="#2fe065" opacity="0.8"/>
+    <!-- Breached rack row 3 - Alarm glow! -->
+    <rect x="28" y="62" width="74" height="11" fill="#4d110d" opacity="0.7"/>
+    <circle cx="35" cy="67" r="2.5" fill="#ff3333">
+      <animate attributeName="opacity" values="1;0.3;1" dur="1.2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="42" cy="67" r="2" fill="#ffaa33"/>
+    
+    <!-- Red ambient light reflection -->
+    <ellipse cx="65" cy="67" rx="30" ry="12" fill="#ff2200" opacity="0.25"/>
+    
+    <!-- Film Grain / Fog overlay -->
+    <rect x="0" y="0" width="130" height="130" fill="none" stroke="#2b2622" stroke-width="0.5" opacity="0.3"/>
+  </g>
+  
+  <!-- Handwritten Note on Polaroid Bottom Chin -->
+  <text x="80" y="162" font-family="'Courier New', monospace" font-style="italic" font-weight="bold" font-size="9" fill="#3a3028" text-anchor="middle">
+    Rack 4B - Node 09
+  </text>
+  <text x="80" y="174" font-family="'Courier New', monospace" font-size="8" fill="#5c4d40" text-anchor="middle">
+    Breach: 03:00:14 UTC
+  </text>
+</svg>

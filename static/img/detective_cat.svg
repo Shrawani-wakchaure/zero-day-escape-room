@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 180" width="160" height="180">
+  <defs>
+    <filter id="cat-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="#140f0c" flood-opacity="0.5"/>
+    </filter>
+    <linearGradient id="cat-fur" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4a3b32"/>
+      <stop offset="50%" stop-color="#342822"/>
+      <stop offset="100%" stop-color="#241a15"/>
+    </linearGradient>
+    <linearGradient id="trench-coat" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d9be8b"/>
+      <stop offset="50%" stop-color="#be9f6a"/>
+      <stop offset="100%" stop-color="#8e7345"/>
+    </linearGradient>
+    <linearGradient id="fedora-hat" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#826644"/>
+      <stop offset="50%" stop-color="#5a4228"/>
+      <stop offset="100%" stop-color="#382816"/>
+    </linearGradient>
+    <linearGradient id="brass-rim" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5d687"/>
+      <stop offset="50%" stop-color="#ba933a"/>
+      <stop offset="100%" stop-color="#694d13"/>
+    </linearGradient>
+  </defs>
+
+  <g filter="url(#cat-shadow)">
+    <!-- Cat Ears poking through hat -->
+    <polygon points="42,50 30,16 58,35" fill="url(#cat-fur)"/>
+    <polygon points="45,46 36,25 54,36" fill="#e8a2a2"/>
+    
+    <polygon points="118,50 130,16 102,35" fill="url(#cat-fur)"/>
+    <polygon points="115,46 124,25 106,36" fill="#e8a2a2"/>
+
+    <!-- Trench Coat Collar & Body -->
+    <path d="M 35,115 C 35,95 50,90 80,90 C 110,90 125,95 125,115 L 138,170 C 138,175 130,178 80,178 C 30,178 22,175 22,170 Z" fill="url(#trench-coat)" stroke="#523e20" stroke-width="1.5"/>
+    
+    <!-- Trench Coat Lapels -->
+    <polygon points="55,90 80,135 60,145 42,105" fill="#a48450" stroke="#4d3b1e" stroke-width="1.2"/>
+    <polygon points="105,90 80,135 100,145 118,105" fill="#a48450" stroke="#4d3b1e" stroke-width="1.2"/>
+    
+    <!-- Red Detective Tie -->
+    <polygon points="76,115 84,115 88,148 80,158 72,148" fill="#a8241c" stroke="#5e120d" stroke-width="1"/>
+    
+    <!-- Cat Head -->
+    <ellipse cx="80" cy="72" rx="42" ry="34" fill="url(#cat-fur)"/>
+
+    <!-- Fedora Detective Hat -->
+    <!-- Crown -->
+    <path d="M 44,48 C 45,28 60,20 80,24 C 100,20 115,28 116,48 Z" fill="url(#fedora-hat)" stroke="#2b1d0e" stroke-width="1.5"/>
+    <!-- Hat Crease dent -->
+    <path d="M 65,22 C 75,28 85,28 95,22" fill="none" stroke="#2b1d0e" stroke-width="2"/>
+    <!-- Hat Ribbon Band -->
+    <path d="M 43,45 C 60,49 100,49 117,45 L 118,50 C 100,54 60,54 42,50 Z" fill="#1f1813"/>
+    <!-- Brim -->
+    <path d="M 28,49 C 55,42 105,42 132,49 C 136,51 125,56 80,56 C 35,56 24,51 28,49 Z" fill="url(#fedora-hat)" stroke="#2b1d0e" stroke-width="1.5"/>
+
+    <!-- Glowing Cat Eyes -->
+    <ellipse cx="64" cy="72" rx="7" ry="8" fill="#5ce874"/>
+    <ellipse cx="96" cy="72" rx="7" ry="8" fill="#5ce874"/>
+    <!-- Slit Pupils -->
+    <ellipse cx="64" cy="72" rx="2.5" ry="7" fill="#122416"/>
+    <ellipse cx="96" cy="72" rx="2.5" ry="7" fill="#122416"/>
+    <!-- Eye Highlights -->
+    <circle cx="62" cy="69" r="2" fill="#ffffff"/>
+    <circle cx="94" cy="69" r="2" fill="#ffffff"/>
+
+    <!-- Nose & Mouth -->
+    <polygon points="76,82 84,82 80,87" fill="#e8a2a2"/>
+    <path d="M 80,87 L 80,91 M 80,91 C 75,93 72,91 68,89 M 80,91 C 85,93 88,91 92,89" fill="none" stroke="#e8a2a2" stroke-width="1.2" stroke-linecap="round"/>
+
+    <!-- Whiskers -->
+    <path d="M 58,82 L 25,78 M 58,86 L 22,87 M 58,90 L 26,96" fill="none" stroke="#f4ede1" stroke-width="1.2" opacity="0.85"/>
+    <path d="M 102,82 L 135,78 M 102,86 L 138,87 M 102,90 L 134,96" fill="none" stroke="#f4ede1" stroke-width="1.2" opacity="0.85"/>
+
+    <!-- Little Detective Paw Holding Magnifying Glass -->
+    <!-- Magnifier -->
+    <g transform="translate(108, 118) rotate(-15) scale(0.7)">
+      <circle cx="30" cy="30" r="18" fill="rgba(195, 235, 255, 0.4)" stroke="url(#brass-rim)" stroke-width="4.5"/>
+      <circle cx="30" cy="30" r="17" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.6"/>
+      <rect x="42" y="42" width="22" height="6" rx="2" transform="rotate(45 42 42)" fill="#3d2616" stroke="#1c0f05" stroke-width="1"/>
+    </g>
+    <!-- Cat Paw Pads -->
+    <ellipse cx="112" cy="142" rx="12" ry="9" fill="url(#cat-fur)"/>
+    <circle cx="106" cy="139" r="3" fill="#e8a2a2"/>
+    <circle cx="112" cy="137" r="3" fill="#e8a2a2"/>
+    <circle cx="118" cy="139" r="3" fill="#e8a2a2"/>
+    <ellipse cx="112" cy="144" rx="5" ry="3.5" fill="#e8a2a2"/>
+  </g>
+</svg>

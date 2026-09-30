@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Zero-Day Escape Room // Vintage Cold Case Archive</title>
+  
+  <!-- Vintage Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Special+Elite&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/static/css/desk.css">
+  <link rel="stylesheet" href="/static/css/casefile.css">
+  <link rel="stylesheet" href="/static/css/stamps.css">
+  <link rel="stylesheet" href="/static/css/puzzles.css">
+</head>
+<body>
+  <!-- Ambient Desk Lamp Glow -->
+  <div class="desk-lamp-glow"></div>
+
+  <!-- Notification Banner (Positioned cleanly below header) -->
+  <div id="desk-notification-banner" class="desk-notification-banner"></div>
+
+  <!-- Desk Top Bar / Controls -->
+  <header class="desk-top-bar">
+    <div class="desk-brand">
+      <img src="/static/img/agency_seal.svg" alt="Agency Seal" class="badge-icon" />
+      <div class="desk-title">
+        <h1>The Zero-Day Escape Room</h1>
+        <div class="sub-title">COLD CASE ARCHIVE // FORENSIC INCIDENT COMMAND</div>
+      </div>
+    </div>
+
+    <!-- Desk Chronometer Countdown (Visible during active investigation) -->
+    <div id="chronometer-wrapper" class="chronometer-container" style="{% if not session_state.game_started %}display:none;{% endif %}">
+      <div class="chronometer-label">
+        <span>SYSTEM INTEGRITY</span>
+        <span id="chronometer-status" class="status-pill">COUNTDOWN ACTIVE</span>
+      </div>
+      <div class="chronometer-display">
+        <span id="chronometer-digits" class="chronometer-digits">20:00</span>
+      </div>
+    </div>
+
+    <!-- Desk Action Buttons -->
+    <div class="desk-actions">
+      <button id="btn-magnifier-prop" class="brass-btn" title="Toggle Magnifying Glass Inspection Mode">
+        🔍 INSPECT LOGS
+      </button>
+      <button id="btn-show-dashboard" class="brass-btn" title="Open Case Directory / Switch Escape Room">
+        🗄️ ARCHIVE DASHBOARD
+      </button>
+      <button id="btn-toggle-audio" class="brass-btn audio-btn" title="Toggle Vintage Sound FX">
+        🔊 AUDIO: ACTIVE
+      </button>
+      <a href="/certificate" class="brass-btn" style="text-decoration:none;" title="View Case Resolution Certificate">
+        📜 CERTIFICATE
+      </a>
+      <button id="btn-reset-game" class="brass-btn red-alert" title="Restart Current Case">
+        🔄 RESET CASE
+      </button>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       1. INTRO DASHBOARD: ESCAPE ROOM DIRECTORY & DOSSIER SELECTION
+       ======================================================================== -->
+  <section id="intro-dashboard-view" class="intro-dashboard-container" style="{% if session_state.game_started %}display:none;{% endif %}">
+    <!-- Investigator ID Card -->
+    <div class="investigator-card">
+      <div class="investigator-info">
+        <img src="/static/img/agency_seal.svg" alt="Forensics Badge" />
+        <div>
+          <div style="font-size:0.75rem; letter-spacing:1.5px; color:#785834; font-weight:bold;">
+            DIGITAL FORENSICS & INCIDENT RESPONSE COMMAND
+          </div>
+          <div style="font-family:var(--font-serif); font-size:1.35rem; font-weight:900; color:#211812;">
+            INVESTIGATOR PROFILE // ACTIVE SESSION
+          </div>
+          <div style="font-size:0.75rem; color:#4a3c28;">
+            CLEARANCE: LEVEL 5 TOP SECRET // CYBER DEFENSE DIRECTIVE
+          </div>
+        </div>
+      </div>
+
+      <div class="callsign-input-box">
+        <label for="dashboard-investigator-name" style="font-size:0.78rem; font-weight:bold; color:#4a3927;">INVESTIGATOR CALLSIGN:</label>
+        <input type="text" id="dashboard-investigator-name" class="typewriter-input" value="{{ session_state.investigator_name }}" placeholder="e.g. Agent S.A." style="width:180px; font-weight:bold;" />
+      </div>
+    </div>
+
+    <!-- Dashboard Header -->
+    <div class="dashboard-heading">
+      <h2>SELECT AN UNRESOLVED CASE FILE (ESCAPE ROOM)</h2>
+      <span>CHOOSE AN INCIDENT DOSSIER TO BEGIN INVESTIGATION</span>
+    </div>
+
+    <!-- Escape Room Dossier Cards -->
+    <div class="dossier-grid">
+      {% for cid, cinfo in cases_data.cases.items() %}
+      <div class="dossier-card {% if session_state.active_case == cid %}active-selected{% endif %}">
+        <div class="dossier-tab-top">
+          {{ cinfo.case_number }}
+        </div>
+
+        <div class="dossier-header">
+          <div class="dossier-code">{{ cinfo.difficulty }}</div>
+          <div class="dossier-title">{{ cinfo.incident_name }}</div>
+          <div class="dossier-meta">
+            <strong>LOCATION:</strong> {{ cinfo.location }}<br/>
+            <strong>INCIDENT TIME:</strong> {{ cinfo.compromise_timestamp }}
+          </div>
+        </div>
+
+        <div class="dossier-body">
+          <div style="margin-bottom:8px; font-weight:bold; color:#702b22; font-size:0.75rem; letter-spacing:1px;">
+            THREAT: {{ cinfo.threat_type }}
+          </div>
+          <p>{{ cinfo.briefing }}</p>
+        </div>
+
+        <div class="dossier-rooms-preview">
+          <div style="font-weight:bold; color:#5c4731; font-size:0.72rem; letter-spacing:1px; margin-bottom:2px;">
+            INCLUDED FORENSIC PUZZLE ROOMS:
+          </div>
+          <div class="preview-step"><span>1.</span> 🔍 Forensic Log Analyzer & Quarantine</div>
+          <div class="preview-step"><span>2.</span> 🛡️ Cloud / Authorization Policy Hardening</div>
+          <div class="preview-step"><span>3.</span> ⚙️ Cryptographic Tunnel Handshake</div>
+          <div class="preview-step"><span>4.</span> 💻 Zero-Day Exploit Regression & Code Patch</div>
+        </div>
+
+        <button class="brass-btn highlight btn-select-case" data-case-id="{{ cid }}">
+          📂 UNSEAL CASE FILE & BEGIN
+        </button>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       2. ACTIVE GAME CASE FILE: THE DETECTIVE DESK WORKSPACE
+       ======================================================================== -->
+  <main id="active-game-view" class="desk-workspace" style="{% if not session_state.game_started %}display:none;{% endif %}">
+    <!-- Manila Case Folder Envelope -->
+    <div class="manila-case-folder">
+      <!-- Perfectly Synchronized Folder Tabs Bar -->
+      <nav class="case-folder-tabs" aria-label="Evidence Files">
+        <button class="folder-tab active" data-room="evidence_01">
+          <span class="tab-status-icon">📂</span>
+          <span class="tab-label">[001-LOG] Log Analyzer</span>
+        </button>
+        <button class="folder-tab locked" data-room="evidence_02">
+          <span class="tab-status-icon">🔒</span>
+          <span class="tab-label">[002-POL] Security Policy</span>
+        </button>
+        <button class="folder-tab locked" data-room="evidence_03">
+          <span class="tab-status-icon">🔒</span>
+          <span class="tab-label">[003-NET] Crypto Blueprint</span>
+        </button>
+        <button class="folder-tab locked" data-room="evidence_04">
+          <span class="tab-status-icon">🔒</span>
+          <span class="tab-label">[004-CODE] Zero-Day Patch</span>
+        </button>
+      </nav>
+
+      <!-- Parchment Case File Document (With safe margins & clear polaroid) -->
+      <article class="parchment-casefile">
+        <!-- Pinned Polaroid Scene at Top Left (Safely clear of the tabs!) -->
+        <div class="pinned-polaroid-container">
+          <img src="/static/img/binder_clip.svg" alt="Binder Clip" class="polaroid-binder-clip" />
+          <img src="/static/img/polaroid_scene.svg" alt="Breach Scene Polaroid" class="polaroid-img-frame" />
+        </div>
+
+        <!-- Case File Header -->
+        <header class="casefile-header">
+          <div class="casefile-title-area">
+            <div class="casefile-classification-bar">
+              {{ case.classification }}
+            </div>
+            <div class="casefile-main-title">
+              CASE FILE: {{ case.incident_name }}
+            </div>
+            <div class="casefile-sub-heading">
+              RECOVERED FORENSICS EVIDENCE // UNRESOLVED INCIDENT
+            </div>
+          </div>
+
+          <!-- Official Archive Number Box -->
+          <div class="archive-number-box">
+            <div class="archive-label">ARCHIVE NO.</div>
+            <div class="archive-code">{{ case.case_number }}</div>
+          </div>
+        </header>
+
+        <!-- Incident Metadata Grid -->
+        <div class="incident-meta-grid">
+          <span class="meta-label">SUBJECT:</span>
+          <span class="meta-value">{{ case.threat_type }}</span>
+
+          <span class="meta-label">LOCATION:</span>
+          <span class="meta-value">{{ case.location }}</span>
+
+          <span class="meta-label">DATE OF INCIDENT:</span>
+          <span class="meta-value">October 12, 1987 // {{ case.compromise_timestamp }}</span>
+
+          <span class="meta-label">INVESTIGATOR:</span>
+          <span id="label-active-investigator" class="meta-value">{{ session_state.investigator_name }}</span>
+        </div>
+
+        <!-- Dynamic Evidence Room Views -->
+        <div class="casefile-body-content">
+          {% include "partials/evidence_01.html" %}
+          {% include "partials/evidence_02.html" %}
+          {% include "partials/evidence_03.html" %}
+          {% include "partials/evidence_04.html" %}
+        </div>
+
+        <!-- Case File Footer Props -->
+        <footer class="casefile-footer">
+          <!-- Manila Evidence Tag at Bottom-Left -->
+          <div class="bottom-evidence-tag-wrapper">
+            <img src="/static/img/evidence_tag.svg" alt="Evidence Tag" class="evidence-tag-bg" />
+            <div class="evidence-tag-overlay">
+              <div><span class="tag-field">Evidence Tag:</span> <span class="tag-val">{{ case.case_number }}</span></div>
+              <div><span class="tag-field">Filed By:</span> <span class="tag-val">{{ session_state.investigator_name }}</span></div>
+              <div><span class="tag-field">Date:</span> <span class="tag-val">10/12/1987</span></div>
+            </div>
+          </div>
+
+          <!-- Stamp Confidential Box -->
+          <div class="stamp-confidential-small">
+            CONFIDENTIAL // EYES ONLY
+          </div>
+
+          <!-- Circular Agency Watermark Seal -->
+          <div class="agency-seal-wrapper">
+            <img src="/static/img/agency_seal.svg" alt="Official Seal" />
+          </div>
+        </footer>
+
+        <!-- Background Watermarks -->
+        <img src="/static/img/compass_rose.svg" alt="Compass Rose" class="bg-compass-watermark" />
+      </article>
+    </div>
+  </main>
+
+  <!-- Desk Floating Props -->
+  <!-- Detective Cat Desk Companion & Hint Partner -->
+  <aside id="detective-cat-widget" class="detective-cat-widget" aria-label="Detective Cat Assistant">
+    <!-- Feline Dispatch Card (Aged Manila Field Memo) -->
+    <div id="cat-speech-bubble" class="cat-speech-bubble" role="dialog" aria-labelledby="cat-badge-title">
+      <div class="cat-dispatch-header">
+        <div class="cat-dispatch-title-row">
+          <span class="cat-badge-icon">🐾</span>
+          <span id="cat-badge-title" class="cat-badge-text">INSPECTOR WHISKERS</span>
+          <span class="cat-badge-tag">HINT CONSULTANT</span>
+        </div>
+        <button id="btn-close-cat-bubble" class="cat-bubble-close" title="Close Dispatch Note" aria-label="Close">&times;</button>
+      </div>
+      <div class="cat-dispatch-meta">
+        OFFICIAL FELINE FORENSIC FIELD NOTES // CLUE LOG
+      </div>
+
+      <div id="cat-speech-text" class="cat-speech-text">
+        <em>*Sniff sniff*...</em> My whiskers detect hidden vulnerabilities in this room. Need a forensic deduction? Click <strong>Meow for Clue</strong> below!
+      </div>
+
+      <div class="cat-actions-row">
+        <button id="btn-cat-hint" class="cat-btn cat-hint-btn" title="Ask Inspector Whiskers for a clue (-30s penalty)">
+          🐾 MEOW FOR CLUE (-30s)
+        </button>
+        <button id="btn-cat-pet" class="cat-btn cat-pet-btn" title="Pet Inspector Whiskers">
+          🐱 PET INSPECTOR
+        </button>
+      </div>
+
+      <div id="cat-hints-container" class="cat-hints-container"></div>
+    </div>
+
+    <!-- Cat Character Desk Stand -->
+    <div id="cat-avatar-btn" class="cat-avatar-btn" title="Click Inspector Whiskers for Clues & Forensic Advice">
+      <img src="/static/img/detective_cat.png" alt="Detective Cat with Trench Coat, Fedora, and Magnifying Glass" class="cat-avatar-img" id="cat-avatar-img" />
+      <div class="cat-desk-shadow"></div>
+      <div class="cat-nameplate">
+        <span class="paw-icon">🐾</span> INSPECTOR WHISKERS
+      </div>
+    </div>
+  </aside>
+
+  <!-- Supervisor's Field Notes Drawer -->
+  <div class="supervisor-memo-drawer">
+    <button id="btn-memo-toggle" class="memo-toggle-btn" title="Open Supervisor's Field Notes">
+      📋 SUPERVISOR'S FIELD NOTES
+    </button>
+    <div id="supervisor-memo-card" class="memo-content-card">
+      <h4>INVESTIGATOR'S FIELD DISPATCH</h4>
+      <div style="font-size:0.75rem; color:#6b5a26; margin-bottom:10px;">
+        Unsealing a supervisor note incurs a 30-second penalty on remaining system integrity.
+      </div>
+      <div id="memo-hints-list"></div>
+      <button id="btn-unlock-hint" class="quick-fix-btn" style="width:100%; margin-top:8px;">
+        🔓 UNSEAL NEXT FIELD NOTE (-30s)
+      </button>
+    </div>
+  </div>
+
+  <!-- Victory Modal -->
+  <div id="victory-modal" class="vintage-modal-backdrop">
+    <div class="vintage-modal">
+      <div class="rubber-stamp stamp-green" style="font-size:1.4rem; margin-bottom:16px;">
+        CASE FILE RESOLVED
+      </div>
+      <h2>THREAT ACTOR LOCKED OUT</h2>
+      <p>
+        Outstanding investigation, <strong id="modal-investigator-name">{{ session_state.investigator_name }}</strong>! 
+        All four cyber vulnerabilities have been remediated, the anomalous IP isolated, security policies hardened, covert tunnel decrypted, and zero-day patched.
+      </p>
+      <div style="font-size:1.15rem; font-weight:bold; color:#785d34; margin:16px 0;">
+        FINAL INVESTIGATOR SCORE: <span id="modal-final-score" style="color:#1e6b36; font-size:1.6rem;">{{ session_state.score }}</span> PTS
+      </div>
+      <div style="display:flex; justify-content:center; gap:12px; margin-top:18px; flex-wrap:wrap;">
+        <a href="/certificate" class="brass-btn" style="text-decoration:none;">
+          📜 VIEW & PRINT OFFICIAL CERTIFICATE
+        </a>
+        <button id="btn-victory-switch-case" class="brass-btn highlight">
+          🗄️ CHOOSE NEXT ESCAPE ROOM
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Over Modal -->
+  <div id="game-over-modal" class="vintage-modal-backdrop">
+    <div class="vintage-modal">
+      <div class="rubber-stamp stamp-red" style="font-size:1.4rem; margin-bottom:16px;">
+        SYSTEM COMPROMISED
+      </div>
+      <h2>SYSTEM INTEGRITY COLLAPSED</h2>
+      <p>
+        The 20-minute countdown expired before all zero-day vulnerabilities were secured.
+        Automated adversary wipers purged the forensic audit trail.
+      </p>
+      <button onclick="window.location.reload();" class="brass-btn red-alert" style="font-size:0.92rem; padding:10px 20px;">
+        REWIND TIME & RE-OPEN ARCHIVE
+      </button>
+    </div>
+  </div>
+
+  <!-- Embedded Session State JSON -->
+  <script id="initial-session-state" type="application/json">
+    {{ session_state | tojson }}
+  </script>
+
+  <!-- JavaScript Modules -->
+  <script src="/static/js/audio.js"></script>
+  <script src="/static/js/timer.js"></script>
+  <script src="/static/js/desk.js"></script>
+  <script src="/static/js/puzzles.js"></script>
+  <script src="/static/js/main.js"></script>
+</body>
+</html>

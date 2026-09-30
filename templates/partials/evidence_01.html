@@ -1,0 +1,92 @@
+<!-- EVIDENCE 01: THE LOG ANALYZER (FORENSICS) -->
+<div id="view-evidence_01" class="evidence-room-view">
+  <div class="evidence-objective-banner">
+    <div class="objective-tag">FORENSIC OBJECTIVE // STEP 1 OF 4</div>
+    <div class="objective-desc">
+      {{ puzzles.evidence_01.objective }}
+    </div>
+  </div>
+
+  <div class="log-analyzer-sheet">
+    <div class="log-toolbar">
+      <div class="log-filter-box">
+        <label for="log-search-filter" style="font-size:0.75rem; font-weight:bold; color:#5c4731;">FILTER LOG ARCHIVE:</label>
+        <input type="text" id="log-search-filter" class="typewriter-input" placeholder="Filter IP, endpoint, status..." />
+      </div>
+      <div style="font-size:0.75rem; color:#78644e; font-style:italic;">
+        Click any log row to select it for firewall quarantine.
+      </div>
+    </div>
+
+    <div class="log-table-container">
+      <table class="log-table">
+        <thead>
+          <tr>
+            <th>TIME (UTC)</th>
+            <th>SOURCE IP</th>
+            <th>METHOD / PROTOCOL</th>
+            <th>TARGET ENDPOINT / PATH</th>
+            <th>STATUS</th>
+            <th>BYTES</th>
+            <th>USER-AGENT / CLIENT</th>
+            <th>FORENSIC NOTE</th>
+          </tr>
+        </thead>
+        <tbody id="log-table-body">
+          {% for entry in puzzles.evidence_01.logs %}
+          <tr class="log-row" data-id="{{ entry.id }}" data-ip="{{ entry.ip }}">
+            <td><strong>{{ entry.time }}</strong></td>
+            <td><code>{{ entry.ip }}</code></td>
+            <td><strong>{{ entry.method }}</strong></td>
+            <td><code>{{ entry.path }}</code></td>
+            <td>
+              <span class="status-badge status-{{ entry.status }}">{{ entry.status }}</span>
+            </td>
+            <td>{{ entry.bytes }}</td>
+            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">{{ entry.user_agent }}</td>
+            <td style="font-size:0.75rem; color:#6b5847;">{{ entry.note }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="log-isolate-bar">
+      <div class="log-selection-info">
+        <span>TARGET FOR FIREWALL QUARANTINE:</span>
+        <input type="text" id="isolate-target-ip" class="typewriter-input" placeholder="Select or type IP..." style="width:160px; margin-left:8px; font-weight:bold; color:#a8241c;" />
+      </div>
+      <button id="btn-isolate-ip" class="brass-btn red-alert" style="position:relative; z-index:10;">
+        <span>ISOLATE & QUARANTINE IP</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Dedicated Status & Endorsement Footer (No overlapping!) -->
+  <div class="evidence-status-footer">
+    <div class="evidence-dispatch-notes">
+      <div class="section-divider" style="margin-top:0;">
+        <div class="section-divider-title">INVESTIGATOR CLUES & DISPATCH</div>
+        <div class="section-divider-line"></div>
+      </div>
+      <p style="font-size:0.84rem; line-height:1.6; color:#40352b;">
+        Inspect the access log lines for reconnaissance probes, unauthenticated traversal attempts, or anomalous payloads. Select the perpetrator's origin IP to engage emergency perimeter quarantine.
+      </p>
+    </div>
+
+    <div class="evidence-stamp-slot">
+      <div id="stamp-box-evidence_01" class="stamp-slot">
+        {% if session_state.stamps.get('evidence_01') %}
+        <div class="rubber-stamp stamp-green stamp-angle-slight">
+          {{ session_state.stamps.evidence_01.text }}
+        </div>
+        {% else %}
+        <div class="rubber-stamp stamp-red stamp-angle-left">
+          UNRESOLVED BREACH
+          <span class="stamp-subtext">QUARANTINE REQUIRED</span>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

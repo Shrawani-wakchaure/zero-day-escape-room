@@ -1,0 +1,82 @@
+<!-- EVIDENCE 04: THE ZERO-DAY PATCH (CODING / LOGIC) -->
+<div id="view-evidence_04" class="evidence-room-view" style="display:none;">
+  <div class="evidence-objective-banner">
+    <div class="objective-tag">CODING REMEDIATION OBJECTIVE // STEP 4 OF 4</div>
+    <div class="objective-desc">
+      {{ puzzles.evidence_04.objective }}
+    </div>
+  </div>
+
+  <div class="code-patch-wrapper">
+    <div style="font-size:0.75rem; color:#785f46; letter-spacing:1px; margin-bottom:8px; font-weight:bold;">
+      RECOVERED MALICIOUS TARGET SCRIPT
+    </div>
+
+    <!-- Vulnerable Source Code Box -->
+    <div class="vulnerable-code-box">
+      <div style="color:#ff6b6b; font-weight:bold; margin-bottom:6px;">
+        # CRITICAL VULNERABILITY DETECTED // ACTIVE INTRUDER EXPLOIT VECTOR
+      </div>
+      <pre><code>{{ puzzles.evidence_04.vulnerable_code }}</code></pre>
+    </div>
+
+    <div style="font-size:0.82rem; font-weight:bold; color:#4a3929; margin-bottom:12px;">
+      SELECT SECURITY REMEDIATION PATCH:
+    </div>
+
+    <!-- Patch Options Grid -->
+    <div class="patch-candidates-grid">
+      {% for opt in puzzles.evidence_04.patch_options %}
+      <div class="patch-candidate-card" data-patch-id="{{ opt.id }}">
+        <div class="candidate-header">
+          <span class="candidate-title">{{ opt.title }}</span>
+          <span style="font-size:0.72rem; color:#6e5843; font-style:italic;">Click to select candidate</span>
+        </div>
+        <div class="candidate-code">
+          <pre><code>{{ opt.code }}</code></pre>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; position:relative; z-index:20; flex-wrap:wrap; gap:10px;">
+      <span style="font-size:0.75rem; color:#665545;">
+        The patch will be audited against active exploit payloads before deployment.
+      </span>
+      <button id="btn-submit-patch" class="brass-btn red-alert" style="position:relative; z-index:25;">
+        <span>RUN REGRESSION EXPLOIT TESTS & DEPLOY PATCH</span>
+      </button>
+    </div>
+
+    <!-- Test Harness Output Console -->
+    <div id="exploit-console" class="exploit-test-suite-console" style="display:none;"></div>
+  </div>
+
+  <!-- Dedicated Status & Endorsement Footer (No overlapping!) -->
+  <div class="evidence-status-footer">
+    <div class="evidence-dispatch-notes">
+      <div class="section-divider" style="margin-top:0;">
+        <div class="section-divider-title">INCIDENT COMMAND FINAL ASSESSMENT</div>
+        <div class="section-divider-line"></div>
+      </div>
+      <p style="font-size:0.84rem; line-height:1.6; color:#40352b;">
+        Applying the secure patch will immediately execute an automated exploit regression test suite. Once all attack vectors are blocked, the case file will be sealed and the adversary locked out.
+      </p>
+    </div>
+
+    <div class="evidence-stamp-slot">
+      <div id="stamp-box-evidence_04" class="stamp-slot">
+        {% if session_state.stamps.get('evidence_04') %}
+        <div class="rubber-stamp stamp-green stamp-angle-slight">
+          {{ session_state.stamps.evidence_04.text }}
+        </div>
+        {% else %}
+        <div class="rubber-stamp stamp-red stamp-angle-left">
+          ZERO-DAY ACTIVE
+          <span class="stamp-subtext">REMOTE EXPLOIT PENDING</span>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

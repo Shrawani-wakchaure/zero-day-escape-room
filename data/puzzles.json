@@ -1,0 +1,627 @@
+{
+  "operation_cold_breach": {
+    "evidence_01": {
+      "id": "evidence_01",
+      "number": "001-LOG",
+      "title": "Evidence 01: The Log Analyzer (Forensics)",
+      "subtitle": "RECOVERED ACCESS LOGS // HOST: CLOUD-ARCHIVE-NODE-09",
+      "date": "OCTOBER 12, 1987 // 03:14:01 UTC",
+      "classification": "CONFIDENTIAL // EVIDENCE TAG 001-A",
+      "objective": "Inspect the raw server access log lines. Detect the rogue IP conducting unauthorized administrative reconnaissance and directory traversal, then stamp and isolate it.",
+      "anomalous_ip": "192.0.2.45",
+      "target_endpoint": "/admin/config.php",
+      "hints": [
+        "Notice the entry at 03:13:45 UTC with a 401 code followed by a successful POST to /admin/config.php at 03:14:01 UTC.",
+        "Check User-Agents: Legitimate users have browser agents; the intruder used Kali Linux and automated python-requests.",
+        "Isolate IP 192.0.2.45 to block the ongoing admin probe."
+      ],
+      "logs": [
+        {
+          "id": 1,
+          "time": "03:11:02",
+          "ip": "10.0.1.15",
+          "method": "GET",
+          "path": "/healthcheck",
+          "status": 200,
+          "bytes": 24,
+          "user_agent": "AWS-Route53-HealthCheck/1.0",
+          "note": "Internal Cloud Watcher"
+        },
+        {
+          "id": 2,
+          "time": "03:12:18",
+          "ip": "198.51.100.12",
+          "method": "GET",
+          "path": "/robots.txt",
+          "status": 200,
+          "bytes": 145,
+          "user_agent": "Mozilla/5.0 (compatible; Googlebot/2.1)",
+          "note": "Known Search Indexer"
+        },
+        {
+          "id": 3,
+          "time": "03:13:45",
+          "ip": "192.0.2.45",
+          "method": "GET",
+          "path": "/admin/config.php?cmd=cat+/etc/passwd",
+          "status": 401,
+          "bytes": 412,
+          "user_agent": "Mozilla/5.0 (X11; Linux x86_64) Kali/2023.4",
+          "note": "Directory Traversal Probe",
+          "flagged": true
+        },
+        {
+          "id": 4,
+          "time": "03:14:01",
+          "ip": "192.0.2.45",
+          "method": "POST",
+          "path": "/admin/config.php",
+          "status": 200,
+          "bytes": 4820,
+          "user_agent": "python-requests/2.31.0",
+          "note": "Unauthorized Admin Config Bypass",
+          "anomalous": true
+        },
+        {
+          "id": 5,
+          "time": "03:14:22",
+          "ip": "172.16.4.2",
+          "method": "GET",
+          "path": "/assets/main.css",
+          "status": 200,
+          "bytes": 14200,
+          "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)",
+          "note": "Office Subnet Staff"
+        },
+        {
+          "id": 6,
+          "time": "03:14:59",
+          "ip": "10.0.1.88",
+          "method": "POST",
+          "path": "/api/telemetry/heartbeat",
+          "status": 204,
+          "bytes": 0,
+          "user_agent": "InternalServiceAgent/2.4",
+          "note": "Fleet Telemetry"
+        },
+        {
+          "id": 7,
+          "time": "03:15:10",
+          "ip": "203.0.113.88",
+          "method": "GET",
+          "path": "/index.html",
+          "status": 200,
+          "bytes": 3520,
+          "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_1)",
+          "note": "External Public Visitor"
+        },
+        {
+          "id": 8,
+          "time": "03:15:44",
+          "ip": "10.0.1.15",
+          "method": "GET",
+          "path": "/healthcheck",
+          "status": 200,
+          "bytes": 24,
+          "user_agent": "AWS-Route53-HealthCheck/1.0",
+          "note": "Internal Cloud Watcher"
+        }
+      ],
+      "stamp_text": "IP ISOLATED & QUARANTINED",
+      "success_message": "IP 192.0.2.45 has been quarantined on border security group SG-EDGE-01. Firewall rule active. Evidence 02 unlocked."
+    },
+    "evidence_02": {
+      "id": "evidence_02",
+      "number": "002-IAM",
+      "title": "Evidence 02: The Broken IAM Policy (Cloud Security)",
+      "subtitle": "INTERCEPTED MEMORANDUM & AWS ACCESS POLICY // S3-ORCHESTRATION",
+      "date": "OCTOBER 12, 1987 // 03:18:22 UTC",
+      "classification": "TOP SECRET // CLOUD COMPLIANCE BREACH",
+      "objective": "The attacker utilized an overly permissive cloud IAM policy. Edit the policy on the memorandum to implement Least Privilege (NIST 800-53 / CIS Benchmark). Restrict Principal, Action, and Resource.",
+      "default_corrupted_policy": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"CorruptedAdminAccess\",\n      \"Effect\": \"Allow\",\n      \"Principal\": \"*\",\n      \"Action\": \"*\",\n      \"Resource\": \"*\"\n    }\n  ]\n}",
+      "required_principal": "arn:aws:iam::123456789012:role/ForensicsOfficer",
+      "required_resource": "arn:aws:s3:::case-files-archive/*",
+      "allowed_actions": ["s3:GetObject", "s3:ListBucket"],
+      "hints": [
+        "A wildcard '*' for Principal allows the entire public Internet to assume this role. Set it to 'arn:aws:iam::123456789012:role/ForensicsOfficer'.",
+        "Wildcard '*' for Action grants destructive permissions like s3:DeleteBucket. Restrict to read-only actions: ['s3:GetObject', 's3:ListBucket'].",
+        "Resource '*' exposes every bucket across the entire cloud account. Lock it down to 'arn:aws:s3:::case-files-archive/*' or 'arn:aws:s3:::case-files-archive'."
+      ],
+      "stamp_text": "COMPLIANCE CERTIFIED - CIS BENCHMARK PASSED",
+      "success_message": "IAM policy hardened. Wildcard privileges revoked and scoped to ForensicsOfficer with Least Privilege. Evidence 03 unlocked."
+    },
+    "evidence_03": {
+      "id": "evidence_03",
+      "number": "003-NET",
+      "title": "Evidence 03: The Crypto Handshake (Network Security)",
+      "subtitle": "CRYPTOGRAPHIC BLUEPRINT // SECURE TUNNEL SPECIFICATION",
+      "date": "OCTOBER 12, 1987 // 03:25:40 UTC",
+      "classification": "CONFIDENTIAL // CRYPTOGRAPHIC SCHEMATIC",
+      "objective": "Reconstruct the secure TLS tunnel by configuring the cryptographic suite parameters. Eliminate deprecated, insecure algorithms to decrypt the attacker's covert transmission channel.",
+      "parameters": {
+        "protocol": {
+          "label": "Protocol Version",
+          "correct": "TLSv1.3",
+          "options": [
+            {"value": "TLSv1.0", "label": "TLS 1.0 (Deprecated, BEAST vulnerable)", "secure": false},
+            {"value": "TLSv1.3", "label": "TLS 1.3 (RFC 8446, 0-RTT, Forward Secrecy)", "secure": true},
+            {"value": "SSLv3.0", "label": "SSL 3.0 (Legacy, POODLE vulnerable)", "secure": false},
+            {"value": "TLSv1.1", "label": "TLS 1.1 (Deprecated by RFC 8996)", "secure": false}
+          ]
+        },
+        "key_exchange": {
+          "label": "Key Exchange Mechanism",
+          "correct": "ECDHE",
+          "options": [
+            {"value": "ECDHE", "label": "ECDHE (Elliptic Curve Diffie-Hellman Ephemeral with PFS)", "secure": true},
+            {"value": "RSA_STATIC", "label": "RSA Static (No PFS, private key leak compromises past traffic)", "secure": false},
+            {"value": "DH_ANON", "label": "Anonymous Diffie-Hellman (Vulnerable to MITM)", "secure": false}
+          ]
+        },
+        "cipher": {
+          "label": "Bulk Encryption Cipher",
+          "correct": "AES-256-GCM",
+          "options": [
+            {"value": "3DES_EDE_CBC", "label": "3DES-EDE-CBC (Sweet32 64-bit block collision)", "secure": false},
+            {"value": "AES-256-GCM", "label": "AES-256-GCM (Authenticated Encryption with AEAD)", "secure": true},
+            {"value": "RC4_128", "label": "RC4-128 (Broken stream cipher, RFC 7465 prohibited)", "secure": false},
+            {"value": "AES-128-CBC", "label": "AES-128-CBC (Vulnerable to padding oracle attacks)", "secure": false}
+          ]
+        },
+        "mac": {
+          "label": "Message Authentication / Hash",
+          "correct": "SHA-384",
+          "options": [
+            {"value": "SHA-384", "label": "SHA-384 (NIST SP 800-57 High-Security Standard)", "secure": true},
+            {"value": "MD5", "label": "MD5 (Cryptographically broken, collision trivial)", "secure": false},
+            {"value": "SHA-1", "label": "SHA-1 (Deprecated, shattered collision)", "secure": false}
+          ]
+        }
+      },
+      "hints": [
+        "Modern compliance requires TLS 1.3 (RFC 8446).",
+        "ECDHE is selected first in modern cipher suites to ensure Perfect Forward Secrecy.",
+        "AEAD ciphers like AES-256-GCM prevent padding oracle exploits.",
+        "SHA-384 provides high-entropy message authentication without collision flaws."
+      ],
+      "decrypted_payload": "INTERCEPTED C2 TRANSMISSION:\n[ALERT] Adversary deployed persistence script at /opt/archive/scripts/healthcheck.py\n[VULNERABILITY] Target uses unescaped user input inside os.system()!\n[SCHEDULED EXPLOIT] Remote shell scheduled to launch at 03:45 AM UTC via weaponized ping target!",
+      "stamp_text": "TUNNEL DECRYPTED - C2 TRACE INTERCEPTED",
+      "success_message": "Cryptographic tunnel decoded! Intercepted adversary transmission pointing to the weaponized script in Evidence 04."
+    },
+    "evidence_04": {
+      "id": "evidence_04",
+      "number": "004-CODE",
+      "title": "Evidence 04: The Zero-Day Patch (Coding / Logic)",
+      "subtitle": "RECOVERED SOURCE CODE // /opt/archive/scripts/healthcheck.py",
+      "date": "OCTOBER 12, 1987 // 03:36:19 UTC",
+      "classification": "TOP SECRET // ACTIVE ZERO-DAY EXPLOIT",
+      "objective": "The adversary weaponized a command injection vulnerability inside the system healthcheck utility. Inspect the Python code, replace the unsafe shell call with a secure subprocess invocation, and seal the zero-day.",
+      "vulnerable_code": "import os\n\ndef run_system_diagnostic(target_host):\n    # VULNERABLE: Direct string interpolation into shell\n    # Adversary input: '127.0.0.1; cat /etc/shadow'\n    command = f\"ping -c 1 {target_host}\"\n    result = os.system(command)\n    return result == 0\n",
+      "patch_options": [
+        {
+          "id": "patch_a",
+          "title": "Patch Option A: Parameterized Execution (shell=False) + IP Validation",
+          "code": "import subprocess\nimport ipaddress\n\ndef run_system_diagnostic(target_host):\n    # SECURE: Strict input validation + argument array with shell=False\n    try:\n        # Validate that target_host is a valid IPv4/IPv6 address\n        ipaddress.ip_address(target_host.strip())\n    except ValueError:\n        return False\n        \n    # Argument array: target_host cannot break out into shell metacharacters\n    proc = subprocess.run(\n        [\"ping\", \"-c\", \"1\", target_host.strip()],\n        shell=False,\n        capture_output=True,\n        text=True,\n        timeout=5\n    )\n    return proc.returncode == 0",
+          "secure": true,
+          "flaw": null
+        },
+        {
+          "id": "patch_b",
+          "title": "Patch Option B: Subprocess with shell=True",
+          "code": "import subprocess\n\ndef run_system_diagnostic(target_host):\n    # Ineffective fix: shell=True passes string directly to /bin/sh\n    cmd = f\"ping -c 1 {target_host}\"\n    proc = subprocess.run(cmd, shell=True, capture_output=True)\n    return proc.returncode == 0",
+          "secure": false,
+          "flaw": "Vulnerable! subprocess.run with shell=True invokes /bin/sh, preserving the command injection vulnerability identically."
+        },
+        {
+          "id": "patch_c",
+          "title": "Patch Option C: Shell Echo Piping",
+          "code": "import os\n\ndef run_system_diagnostic(target_host):\n    # Ineffective fix: still spawns shell interpreter\n    command = f\"echo '{target_host}' | xargs ping -c 1\"\n    return os.system(command) == 0",
+          "secure": false,
+          "flaw": "Still vulnerable! An attacker supplying 127.0.0.1' $(whoami) ' escapes the single quotes and executes arbitrary commands."
+        }
+      ],
+      "hints": [
+        "Examine Option A: It validates the IP with ipaddress.ip_address() and passes arguments as a list without invoking a shell.",
+        "Option B fails because shell=True still evaluates shell operators (; & |).",
+        "Option C fails because quote escaping can be broken with command substitution $(...)."
+      ],
+      "test_payloads": [
+        {"input": "127.0.0.1", "description": "Benign local IP address", "expected_allow": true},
+        {"input": "127.0.0.1; cat /etc/passwd", "description": "Command chaining via semicolon", "expected_allow": false},
+        {"input": "8.8.8.8 && whoami", "description": "Command chaining via logical AND", "expected_allow": false}
+      ],
+      "stamp_text": "CASE FILE RESOLVED - ATTACKER LOCKED OUT",
+      "success_message": "Zero-day vulnerability patched! Subprocess argument isolation and IP address validation passed all regression exploits. Case file successfully solved!"
+    }
+  },
+  "phantom_cipher": {
+    "evidence_01": {
+      "id": "evidence_01",
+      "number": "001-FLOW",
+      "title": "Evidence 01: The Network Flow Record (Forensics)",
+      "subtitle": "RECOVERED SCADA PCAP RECORD // HOST: SCADA-PLC-04",
+      "date": "OCTOBER 12, 1987 // 04:15:22 UTC",
+      "classification": "TOP SECRET // CRITICAL INFRASTRUCTURE",
+      "objective": "Inspect the industrial telemetry logs. Identify the unauthorized external IP sending weaponized Modbus/TCP override commands to industrial port 502, and apply an emergency SCADA firewall block.",
+      "anomalous_ip": "198.51.100.77",
+      "target_endpoint": "PORT 502 (Modbus/TCP)",
+      "hints": [
+        "Internal PLC controllers operate strictly on 10.200.x.x subnets.",
+        "Check row 2 at 04:14:02 UTC: External IP 198.51.100.77 transmitted an unauthorized WRITE_SINGLE_COIL override packet to port 502!",
+        "Isolate IP 198.51.100.77 immediately."
+      ],
+      "logs": [
+        {
+          "id": 1,
+          "time": "04:13:30",
+          "ip": "10.200.1.10",
+          "method": "READ_HOLDING_REG",
+          "path": "PORT 502 (Modbus)",
+          "status": 200,
+          "bytes": 64,
+          "user_agent": "SCADA-Master-Poller/3.1",
+          "note": "Routine Pressure Telemetry"
+        },
+        {
+          "id": 2,
+          "time": "04:14:02",
+          "ip": "198.51.100.77",
+          "method": "WRITE_SINGLE_COIL",
+          "path": "PORT 502 (Modbus)",
+          "status": 200,
+          "bytes": 128,
+          "user_agent": "Python-Pymodbus/2.5.3",
+          "note": "UNAUTHORIZED VALVE OVERRIDE ATTEMPT",
+          "anomalous": true
+        },
+        {
+          "id": 3,
+          "time": "04:14:15",
+          "ip": "10.200.1.15",
+          "method": "DIAGNOSTIC_ECHO",
+          "path": "PORT 502 (Modbus)",
+          "status": 200,
+          "bytes": 48,
+          "user_agent": "PLC-Heartbeat/1.0",
+          "note": "Substation Echo Check"
+        },
+        {
+          "id": 4,
+          "time": "04:14:48",
+          "ip": "10.200.2.4",
+          "method": "GET_TELEMETRY",
+          "path": "/api/v1/flow",
+          "status": 200,
+          "bytes": 256,
+          "user_agent": "HMI-Display-Station/4.0",
+          "note": "Operator Console Poll"
+        },
+        {
+          "id": 5,
+          "time": "04:15:01",
+          "ip": "198.51.100.77",
+          "method": "PROBE_FUNCTION",
+          "path": "PORT 502 (Modbus)",
+          "status": 401,
+          "bytes": 32,
+          "user_agent": "Python-Pymodbus/2.5.3",
+          "note": "Function Code Scan",
+          "flagged": true
+        }
+      ],
+      "stamp_text": "SCADA GATEWAY ISOLATED",
+      "success_message": "IP 198.51.100.77 isolated at the industrial border router. Modbus override packets blocked. Evidence 02 unlocked."
+    },
+    "evidence_02": {
+      "id": "evidence_02",
+      "number": "002-AUTH",
+      "title": "Evidence 02: The Unsecured JWT Policy (API Security)",
+      "subtitle": "INTERCEPTED GATEWAY AUTH POLICY // SCADA-TELEMETRY-GATEWAY",
+      "date": "OCTOBER 12, 1987 // 04:18:10 UTC",
+      "classification": "TOP SECRET // AUTHENTICATION VULNERABILITY",
+      "objective": "The adversary forged tokens by abusing an insecure authentication configuration that accepts unverified 'none' algorithms. Harden the authentication policy to enforce RS256 signatures, trusted issuer, and audience.",
+      "default_corrupted_policy": "{\n  \"AuthMode\": \"JWT\",\n  \"AllowedAlgorithms\": [\"none\", \"HS256\"],\n  \"RequireSignature\": false,\n  \"VerifyIssuer\": false,\n  \"Audience\": \"*\"\n}",
+      "hints": [
+        "Disallow the 'none' algorithm! The only secure cryptographic asymmetric algorithm is 'RS256'.",
+        "Set 'RequireSignature' to true and 'VerifyIssuer' to true.",
+        "Set 'Audience' to 'scada-telemetry-gateway' instead of wildcard '*'."
+      ],
+      "stamp_text": "JWT SIGNATURE ENFORCED - ZERO-TRUST AUDIT PASSED",
+      "success_message": "Authentication policy hardened! Insecure 'none' algorithm banned and RS256 signature verification enforced. Evidence 03 unlocked."
+    },
+    "evidence_03": {
+      "id": "evidence_03",
+      "number": "003-CIPHER",
+      "title": "Evidence 03: The Industrial Cryptographic Protocol",
+      "subtitle": "SCADA ENCRYPTED TELEMETRY SPECIFICATION // CIPHER-SUITE-1987",
+      "date": "OCTOBER 12, 1987 // 04:22:33 UTC",
+      "classification": "CONFIDENTIAL // PROTOCOL SCHEMATIC",
+      "objective": "Reconstruct the secure low-latency telemetry cryptographic suite. Reject broken legacy ciphers to decrypt the adversary's intercepted telemetry instructions.",
+      "parameters": {
+        "protocol": {
+          "label": "Protocol Version",
+          "correct": "TLSv1.3",
+          "options": [
+            {"value": "TLSv1.3", "label": "TLS 1.3 (RFC 8446 High Speed & Security)", "secure": true},
+            {"value": "SSLv3.0", "label": "SSL 3.0 (Deprecated)", "secure": false},
+            {"value": "TLSv1.0", "label": "TLS 1.0 (Deprecated)", "secure": false}
+          ]
+        },
+        "key_exchange": {
+          "label": "Key Exchange Mechanism",
+          "correct": "ECDHE",
+          "options": [
+            {"value": "RSA_STATIC", "label": "RSA Static (No PFS)", "secure": false},
+            {"value": "ECDHE", "label": "ECDHE (Elliptic Curve with PFS)", "secure": true},
+            {"value": "DH_ANON", "label": "Anonymous DH (No auth)", "secure": false}
+          ]
+        },
+        "cipher": {
+          "label": "Bulk Encryption Cipher",
+          "correct": "CHACHA20-POLY1305",
+          "options": [
+            {"value": "CHACHA20-POLY1305", "label": "ChaCha20-Poly1305 (High Performance AEAD)", "secure": true},
+            {"value": "RC4_128", "label": "RC4-128 (Broken stream)", "secure": false},
+            {"value": "3DES_EDE_CBC", "label": "3DES-EDE-CBC (Sweet32 vulnerable)", "secure": false}
+          ]
+        },
+        "mac": {
+          "label": "Integrity Verification",
+          "correct": "HMAC-SHA256",
+          "options": [
+            {"value": "MD5", "label": "MD5 (Collision broken)", "secure": false},
+            {"value": "HMAC-SHA256", "label": "HMAC-SHA256 (NIST Approved)", "secure": true},
+            {"value": "SHA-1", "label": "SHA-1 (Deprecated)", "secure": false}
+          ]
+        }
+      },
+      "hints": [
+        "TLS 1.3 is the modern gold standard protocol.",
+        "ChaCha20-Poly1305 is the fastest AEAD cipher for constrained industrial microcontrollers.",
+        "ECDHE provides Perfect Forward Secrecy, while HMAC-SHA256 guarantees frame integrity."
+      ],
+      "decrypted_payload": "INTERCEPTED SCADA EXPLOIT:\n[TARGET] /opt/scada/scripts/valve_controller.py\n[EXPLOIT VECTOR] SQL injection in get_valve_status() query string!\n[COMMAND] ' OR 1=1; UPDATE valves SET pressure = 999; --",
+      "stamp_text": "TELEMETRY TUNNEL DECRYPTED",
+      "success_message": "Covert telemetry decrypted! Adversary plans to trigger water pressure spike via SQL injection in Evidence 04."
+    },
+    "evidence_04": {
+      "id": "evidence_04",
+      "number": "004-FIRMWARE",
+      "title": "Evidence 04: The SCADA Firmware Patch (Coding / SQLi)",
+      "subtitle": "RECOVERED FIRMWARE SOURCE // /opt/scada/scripts/valve_controller.py",
+      "date": "OCTOBER 12, 1987 // 04:28:44 UTC",
+      "classification": "TOP SECRET // INDUSTRIAL SAFETY HAZARD",
+      "objective": "The adversary weaponized SQL injection inside the valve telemetry lookup. Inspect the Python code, replace the raw string concatenation with a secure parameterized query, and lock out the exploit.",
+      "vulnerable_code": "import sqlite3\n\ndef get_valve_status(valve_id):\n    # VULNERABLE: Direct string formatting into SQL query\n    # Attacker payload: ' OR 1=1; UPDATE valves SET pressure=999; --\n    conn = sqlite3.connect('/opt/scada/data/valves.db')\n    cursor = conn.cursor()\n    query = f\"SELECT status FROM valves WHERE valve_id = '{valve_id}'\"\n    cursor.execute(query)\n    return cursor.fetchall()\n",
+      "patch_options": [
+        {
+          "id": "patch_a",
+          "title": "Patch Option A: Naive Quote Stripping",
+          "code": "def get_valve_status(valve_id):\n    # Flawed: quote stripping fails against numeric or union payloads\n    clean_id = str(valve_id).replace(\"'\", \"\")\n    query = f\"SELECT status FROM valves WHERE valve_id = '{clean_id}'\"\n    cursor.execute(query)\n    return cursor.fetchall()",
+          "secure": false,
+          "flaw": "Still vulnerable! Ineffective against second-order payloads or queries without surrounding quotes."
+        },
+        {
+          "id": "patch_b",
+          "title": "Patch Option B: Parameterized Prepared Query + Type Coercion",
+          "code": "def get_valve_status(valve_id):\n    # SECURE: Strict integer type validation & parameterized placeholders\n    if not str(valve_id).isdigit():\n        return []\n        \n    conn = sqlite3.connect('/opt/scada/data/valves.db')\n    cursor = conn.cursor()\n    # Using '?' parameter placeholder prevents SQL injection\n    cursor.execute(\"SELECT status FROM valves WHERE valve_id = ?\", (int(valve_id),))\n    return cursor.fetchall()",
+          "secure": true,
+          "flaw": null
+        },
+        {
+          "id": "patch_c",
+          "title": "Patch Option C: Raw Substring Truncation",
+          "code": "def get_valve_status(valve_id):\n    # Flawed: truncating to 16 chars still allows compact SQLi (e.g. 1' OR '1'='1)\n    short_id = str(valve_id)[:16]\n    query = f\"SELECT status FROM valves WHERE valve_id = '{short_id}'\"\n    cursor.execute(query)\n    return cursor.fetchall()",
+          "secure": false,
+          "flaw": "Vulnerable! Truncation does not prevent malicious SQL parsing."
+        }
+      ],
+      "hints": [
+        "Notice Option B: It converts valve_id to an integer and uses parameterized placeholders (?).",
+        "String sanitization like replace() or substring truncation never guarantees SQL safety.",
+        "Choose Option B (Parameterized Prepared Query)."
+      ],
+      "test_payloads": [
+        {"input": "42", "description": "Benign valve ID", "expected_allow": true},
+        {"input": "' OR 1=1; --", "description": "Classic authentication bypass injection", "expected_allow": false},
+        {"input": "1; DROP TABLE valves; --", "description": "Destructive SQL command chaining", "expected_allow": false}
+      ],
+      "stamp_text": "SCADA FIRMWARE SECURED - CASE RESOLVED",
+      "success_message": "SQL injection patched! Parameterized execution prevented all injection payloads. Municipal water grid secured!"
+    }
+  },
+  "black_ice": {
+    "evidence_01": {
+      "id": "evidence_01",
+      "number": "001-DBLOG",
+      "title": "Evidence 01: The Database Query Audit Log (Forensics)",
+      "subtitle": "RECOVERED POSTGRES AUDIT LOG // HOST: VAULT-DB-MASTER",
+      "date": "OCTOBER 12, 1987 // 01:21:40 UTC",
+      "classification": "TOP SECRET // FINANCIAL EXFILTRATION",
+      "objective": "Inspect the database audit logs. Detect the anomalous IP executing blind time-based SQL injection probes (e.g. pg_sleep) against the financial vault ledger.",
+      "anomalous_ip": "203.0.113.19",
+      "target_endpoint": "/api/v1/vault/transfer",
+      "hints": [
+        "Check row 4: Notice an external IP executing 'SELECT pg_sleep(10)' inside a transfer inquiry at 01:20:18 UTC.",
+        "Target IP is 203.0.113.19.",
+        "Click to select and apply quarantine."
+      ],
+      "logs": [
+        {
+          "id": 1,
+          "time": "01:18:22",
+          "ip": "10.50.0.4",
+          "method": "SELECT",
+          "path": "TABLE vault_balance",
+          "status": 200,
+          "bytes": 512,
+          "user_agent": "LedgerService/2.1",
+          "note": "Reconciliation Query"
+        },
+        {
+          "id": 2,
+          "time": "01:19:04",
+          "ip": "10.50.0.12",
+          "method": "INSERT",
+          "path": "TABLE audit_trail",
+          "status": 201,
+          "bytes": 128,
+          "user_agent": "AuditWorker/1.0",
+          "note": "Routine Sync"
+        },
+        {
+          "id": 3,
+          "time": "01:19:45",
+          "ip": "10.50.0.4",
+          "method": "SELECT",
+          "path": "TABLE vault_balance",
+          "status": 200,
+          "bytes": 512,
+          "user_agent": "LedgerService/2.1",
+          "note": "Reconciliation Query"
+        },
+        {
+          "id": 4,
+          "time": "01:20:18",
+          "ip": "203.0.113.19",
+          "method": "SELECT",
+          "path": "/api/v1/vault/transfer?acct=1' AND (SELECT pg_sleep(10))--",
+          "status": 200,
+          "bytes": 10440,
+          "user_agent": "sqlmap/1.7.2#stable",
+          "note": "BLIND TIME-BASED SQL INJECTION PROBE",
+          "anomalous": true
+        },
+        {
+          "id": 5,
+          "time": "01:21:02",
+          "ip": "172.20.4.1",
+          "method": "SELECT",
+          "path": "TABLE public_keys",
+          "status": 200,
+          "bytes": 2048,
+          "user_agent": "KeyService/3.0",
+          "note": "Keyring Lookup"
+        }
+      ],
+      "stamp_text": "EXFILTRATION IP BLOCKED",
+      "success_message": "IP 203.0.113.19 blacklisted on enterprise perimeter. Database connection terminated. Evidence 02 unlocked."
+    },
+    "evidence_02": {
+      "id": "evidence_02",
+      "number": "002-ROLE",
+      "title": "Evidence 02: The Database Role Policy (Cloud Security)",
+      "subtitle": "INTERCEPTED POSTGRES ROLE DEFINITION // PUBLIC_API_USER",
+      "date": "OCTOBER 12, 1987 // 01:24:50 UTC",
+      "classification": "TOP SECRET // PRIVILEGE ESCALATION",
+      "objective": "The attacker escalated privileges because the public API role possessed excessive administrative privileges. Edit the SQL role grant policy to revoke SUPERUSER and restrict access strictly to read-only transaction ledger access.",
+      "default_corrupted_policy": "{\n  \"RoleName\": \"public_api_user\",\n  \"SuperUser\": true,\n  \"CreateDB\": true,\n  \"GrantedPermissions\": [\"ALL PRIVILEGES\"],\n  \"TargetTables\": [\"*\"]\n}",
+      "hints": [
+        "Set 'SuperUser' to false and 'CreateDB' to false.",
+        "Restrict 'GrantedPermissions' to [\"SELECT\", \"INSERT\"].",
+        "Restrict 'TargetTables' to [\"vault_transactions\"]."
+      ],
+      "stamp_text": "ROLE PRIVILEGES HARDENED - LEAST PRIVILEGE CERTIFIED",
+      "success_message": "Superuser privileges revoked! Database role locked down to least-privilege transaction tables. Evidence 03 unlocked."
+    },
+    "evidence_03": {
+      "id": "evidence_03",
+      "number": "003-VAULT",
+      "title": "Evidence 03: The Vault Key Custody Handshake",
+      "subtitle": "CRYPTOGRAPHIC HANDSHAKE SCHEMATIC // HARDWARE-SECURITY-MODULE",
+      "date": "OCTOBER 12, 1987 // 01:28:15 UTC",
+      "classification": "CONFIDENTIAL // FINANCIAL CIPHER BLUEPRINT",
+      "objective": "Reconstruct the secure Hardware Security Module (HSM) transport cipher to intercept and decrypt the attacker's exfiltration command packet.",
+      "parameters": {
+        "protocol": {
+          "label": "Protocol Standard",
+          "correct": "TLSv1.3",
+          "options": [
+            {"value": "TLSv1.1", "label": "TLS 1.1 (Deprecated)", "secure": false},
+            {"value": "SSLv3.0", "label": "SSL 3.0 (Vulnerable)", "secure": false},
+            {"value": "TLSv1.3", "label": "TLS 1.3 (RFC 8446 FIPS 140-3 Compliant)", "secure": true}
+          ]
+        },
+        "key_exchange": {
+          "label": "Key Custody Exchange",
+          "correct": "ECDHE",
+          "options": [
+            {"value": "ECDHE", "label": "ECDHE (Curve25519 Ephemeral PFS)", "secure": true},
+            {"value": "RSA_STATIC", "label": "RSA Static 2048 (No PFS)", "secure": false},
+            {"value": "DH_ANON", "label": "Anonymous DH (Unauthenticated)", "secure": false}
+          ]
+        },
+        "cipher": {
+          "label": "Data Encryption Cipher",
+          "correct": "AES-256-GCM",
+          "options": [
+            {"value": "3DES_EDE_CBC", "label": "3DES-EDE-CBC (Sweet32)", "secure": false},
+            {"value": "AES-256-GCM", "label": "AES-256-GCM (Authenticated Encryption)", "secure": true},
+            {"value": "RC4_128", "label": "RC4-128 (Broken stream)", "secure": false}
+          ]
+        },
+        "mac": {
+          "label": "Cryptographic Hash",
+          "correct": "SHA-512",
+          "options": [
+            {"value": "SHA-512", "label": "SHA-512 (High-Entropy Integrity)", "secure": true},
+            {"value": "MD5", "label": "MD5 (Insecure)", "secure": false},
+            {"value": "SHA-1", "label": "SHA-1 (Deprecated)", "secure": false}
+          ]
+        }
+      },
+      "hints": [
+        "Protocol TLS 1.3 is required for FIPS 140-3 compliance.",
+        "ECDHE provides Ephemeral Forward Secrecy on Curve25519.",
+        "AES-256-GCM authenticated cipher combined with SHA-512 message digest."
+      ],
+      "decrypted_payload": "INTERCEPTED FINANCIAL EXFILTRATION:\n[PAYLOAD SCRIPT] /opt/vault/handlers/sync_batch.py\n[ZERO-DAY EXPLOIT] Remote Code Execution via pickle.loads(raw_stream)!\n[TRIGGER] Base64 deserialization bomb scheduled for 01:35 AM UTC!",
+      "stamp_text": "HSM TUNNEL DECRYPTED - EXPLOIT IDENTIFIED",
+      "success_message": "HSM tunnel decrypted! Target script identified with unsafe Python pickle deserialization in Evidence 04."
+    },
+    "evidence_04": {
+      "id": "evidence_04",
+      "number": "004-RCE",
+      "title": "Evidence 04: The Deserialization Zero-Day Patch (Coding / RCE)",
+      "subtitle": "RECOVERED TRANSACTION HANDLER // /opt/vault/handlers/sync_batch.py",
+      "date": "OCTOBER 12, 1987 // 01:32:05 UTC",
+      "classification": "TOP SECRET // REMOTE CODE EXECUTION EXPLOIT",
+      "objective": "The adversary weaponized an unsafe Python pickle deserialization flaw inside sync_batch.py to gain root shell execution. Replace the unsafe pickle deserializer with safe JSON schema parsing, and seal the zero-day.",
+      "vulnerable_code": "import pickle\nimport base64\n\ndef process_batch_sync(raw_payload):\n    # VULNERABLE: Unsafe deserialization allows arbitrary code execution via __reduce__\n    # Adversary payload: base64 encoded pickle with os.system('curl ... | sh')\n    decoded = base64.b64decode(raw_payload)\n    data = pickle.loads(decoded)\n    return data.get('transactions', [])\n",
+      "patch_options": [
+        {
+          "id": "patch_a",
+          "title": "Patch Option A: Regex Keyword Filtering with Pickle",
+          "code": "def process_batch_sync(raw_payload):\n    # Ineffective: keyword blocklists on binary pickle streams are easily bypassed\n    decoded = base64.b64decode(raw_payload)\n    if b'os.' in decoded or b'eval' in decoded:\n        return []\n    return pickle.loads(decoded).get('transactions', [])",
+          "secure": false,
+          "flaw": "Vulnerable! Pickle opcodes can build arbitrary objects without using literal keyword strings."
+        },
+        {
+          "id": "patch_b",
+          "title": "Patch Option B: Strict JSON Deserialization + Typed Validation",
+          "code": "import json\nimport base64\n\ndef process_batch_sync(raw_payload):\n    # SECURE: Safe data format (JSON) eliminates code execution vectors entirely\n    try:\n        decoded = base64.b64decode(raw_payload).decode('utf-8')\n        data = json.loads(decoded)\n        if isinstance(data, dict) and isinstance(data.get('transactions'), list):\n            return data['transactions']\n        return []\n    except (ValueError, UnicodeDecodeError, json.JSONDecodeError):\n        return []",
+          "secure": true,
+          "flaw": null
+        },
+        {
+          "id": "patch_c",
+          "title": "Patch Option C: Running Pickle in a Thread",
+          "code": "import pickle\nimport threading\n\ndef process_batch_sync(raw_payload):\n    # Ineffective: threading does not isolate process memory or system calls\n    result = []\n    t = threading.Thread(target=lambda: result.extend(pickle.loads(base64.b64decode(raw_payload)).get('transactions', [])))\n    t.start()\n    t.join(timeout=2)\n    return result",
+          "secure": false,
+          "flaw": "Vulnerable! A thread still has full access to the host Python process and operating system."
+        }
+      ],
+      "hints": [
+        "Pickle should NEVER be used on untrusted input because binary opcodes can execute arbitrary code.",
+        "Notice Option B: It replaces pickle with json.loads() and validates that transactions is a list.",
+        "Select Option B (Strict JSON Deserialization)."
+      ],
+      "test_payloads": [
+        {"input": "eyJ0cmFuc2FjdGlvbnMiOiBbMTAwLCAyMDBdfQ==", "description": "Benign JSON transaction batch", "expected_allow": true},
+        {"input": "gASVFAAAAAAAAACMBXBvc2l4lIwGc3lzdGVtlJOUjAZpZCCUlIWUUpQu", "description": "Weaponized pickle payload triggering system('id')", "expected_allow": false}
+      ],
+      "stamp_text": "DESERIALIZATION VULNERABILITY SEALED",
+      "success_message": "Pickle deserialization flaw replaced with safe JSON parsing! Exploit regression tests passed. Financial ledger secured!"
+    }
+  }
+}

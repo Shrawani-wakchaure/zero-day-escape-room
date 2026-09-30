@@ -1,0 +1,1006 @@
+/* ==========================================================================
+   THE ZERO-DAY ESCAPE ROOM - VINTAGE DETECTIVE DESK & DASHBOARD ENVIRONMENT
+   ========================================================================== */
+
+:root {
+  --wood-desk: #241c18;
+  --wood-desk-dark: #16110f;
+  --desk-leather: #3a2b22;
+  --brass-gold: #c9a456;
+  --brass-dark: #82662c;
+  --manila-folder: #d8c29d;
+  --manila-folder-dark: #beaa83;
+  --parchment: #f4ecd8;
+  --parchment-shadow: #d7caa9;
+  --ink-black: #1a1614;
+  --ink-faded: #423b36;
+  --stamp-red: #a8241c;
+  --stamp-red-faint: rgba(168, 36, 28, 0.15);
+  --stamp-blue: #1c4868;
+  --stamp-green: #256138;
+  --font-typewriter: 'Special Elite', 'Courier Prime', 'Courier New', monospace;
+  --font-serif: 'Playfair Display', 'Cinzel', Georgia, serif;
+  --font-handwriting: 'Caveat', 'Patrick Hand', cursive;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-typewriter);
+  color: var(--ink-black);
+  background-color: var(--wood-desk-dark);
+  background-image: 
+    radial-gradient(ellipse at 50% 15%, rgba(255, 235, 190, 0.12) 0%, rgba(0, 0, 0, 0.75) 85%),
+    repeating-linear-gradient(90deg, #1c1512 0px, #241c18 20px, #1a1310 40px, #2b211c 80px, #1f1714 120px),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(20, 15, 12, 0.8) 100%);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ambient Desk Lamp Glow Overlay */
+.desk-lamp-glow {
+  position: fixed;
+  top: -150px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 950px;
+  height: 600px;
+  background: radial-gradient(circle at 50% 30%, rgba(255, 225, 160, 0.18) 0%, rgba(255, 205, 120, 0.05) 50%, transparent 75%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Top Notification Banner (Fixed Slide-Down Below Header) */
+.desk-notification-banner {
+  position: fixed;
+  top: 75px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  background: #fbf5cd;
+  border: 2px solid #826e54;
+  padding: 12px 28px;
+  border-radius: 4px;
+  font-size: 0.88rem;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.75);
+  z-index: 9999;
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+  color: #2b221a;
+  max-width: 90vw;
+  text-align: center;
+}
+
+.desk-notification-banner.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(12px);
+  pointer-events: auto;
+}
+
+.desk-notification-banner.success {
+  background: #e4f7e9;
+  border-color: #26753d;
+  color: #12401f;
+}
+
+.desk-notification-banner.error {
+  background: #fdeaea;
+  border-color: #a8241c;
+  color: #5c1410;
+}
+
+.desk-notification-banner.info {
+  background: #fbf5cd;
+  border-color: #8c7627;
+  color: #3d3110;
+}
+
+/* Desk Top Control Bar */
+.desk-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 24px;
+  background: linear-gradient(180deg, rgba(20, 15, 12, 0.98) 0%, rgba(35, 27, 23, 0.94) 100%);
+  border-bottom: 2px solid var(--brass-dark);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+  position: relative;
+  z-index: 100;
+  gap: 16px;
+  min-height: 64px;
+  flex-wrap: wrap;
+}
+
+.desk-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.desk-brand .badge-icon {
+  width: 36px;
+  height: 36px;
+}
+
+.desk-title h1 {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  letter-spacing: 1.5px;
+  color: #f0e2c8;
+  text-transform: uppercase;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+}
+
+.desk-title .sub-title {
+  font-family: var(--font-typewriter);
+  font-size: 0.72rem;
+  color: var(--brass-gold);
+  letter-spacing: 1.2px;
+  white-space: nowrap;
+}
+
+/* Vintage Desk Chronometer (Countdown Timer) */
+.chronometer-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(145deg, #1b1614 0%, #29211c 100%);
+  border: 1.5px solid var(--brass-gold);
+  border-radius: 6px;
+  padding: 5px 14px;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.8), 0 3px 8px rgba(0, 0, 0, 0.5);
+  flex-shrink: 0;
+}
+
+.chronometer-label {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+.chronometer-label span {
+  font-size: 0.62rem;
+  letter-spacing: 1.2px;
+  color: #a39281;
+  text-transform: uppercase;
+}
+
+.chronometer-label .status-pill {
+  font-size: 0.65rem;
+  font-weight: bold;
+  color: #55d475;
+}
+
+.chronometer-display {
+  display: flex;
+  align-items: center;
+  background: #0d0a09;
+  border: 1px solid #4a3c28;
+  border-radius: 4px;
+  padding: 3px 8px;
+}
+
+.chronometer-digits {
+  font-family: 'Courier New', monospace;
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: 2.5px;
+  color: #ff3838;
+  text-shadow: 0 0 10px rgba(255, 56, 56, 0.7), 0 0 2px #fff;
+  min-width: 80px;
+  text-align: center;
+}
+
+.chronometer-digits.warning {
+  animation: pulse-red 1s infinite alternate;
+}
+
+@keyframes pulse-red {
+  0% { color: #ff3838; text-shadow: 0 0 8px rgba(255, 56, 56, 0.6); }
+  100% { color: #ff9999; text-shadow: 0 0 16px rgba(255, 56, 56, 1); }
+}
+
+/* Desk Controls / Action Buttons */
+.desk-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.brass-btn {
+  font-family: var(--font-typewriter);
+  font-size: 0.78rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #f7eed9;
+  background: linear-gradient(180deg, #6b5329 0%, #443419 100%);
+  border: 1px solid var(--brass-gold);
+  border-radius: 4px;
+  padding: 8px 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  transition: all 0.15s ease;
+  max-width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  line-height: 1.35;
+  white-space: normal;
+}
+
+.brass-btn:hover {
+  background: linear-gradient(180deg, #876935 0%, #544120 100%);
+  border-color: #ffd685;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.7);
+  transform: translateY(-1px);
+}
+
+.brass-btn:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.brass-btn.red-alert {
+  background: linear-gradient(180deg, #8f2a24 0%, #591915 100%);
+  border-color: #d9534f;
+  color: #ffdede;
+}
+
+.brass-btn.red-alert:hover {
+  background: linear-gradient(180deg, #a8322b 0%, #6e1f1a 100%);
+}
+
+.brass-btn.highlight {
+  background: linear-gradient(180deg, #2b7040 0%, #174224 100%);
+  border-color: #55d475;
+}
+
+.btn-select-case {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   INTRO DASHBOARD VIEW (CASE DIRECTORY & SELECTION)
+   ========================================================================== */
+.intro-dashboard-container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 20px auto 40px;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* Investigator ID & Callsign Desk Card */
+.investigator-card {
+  background: #fbf5cd;
+  border: 2px solid #826e54;
+  border-radius: 4px;
+  padding: 18px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+  flex-wrap: wrap;
+  gap: 15px;
+  position: relative;
+}
+
+.investigator-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.investigator-info img {
+  width: 50px;
+  height: 50px;
+}
+
+.callsign-input-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Dashboard Section Heading */
+.dashboard-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 2px solid var(--brass-gold);
+  padding-bottom: 8px;
+  color: #f0e2c8;
+}
+
+.dashboard-heading h2 {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.dashboard-heading span {
+  font-size: 0.8rem;
+  color: var(--brass-gold);
+  letter-spacing: 1px;
+}
+
+/* Escape Room Dossier Cards Grid */
+.dossier-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 22px;
+}
+
+.dossier-card {
+  background: var(--manila-folder);
+  background-image: 
+    radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.3) 0%, transparent 40%),
+    linear-gradient(180deg, rgba(230, 210, 175, 0.9) 0%, rgba(200, 175, 135, 0.95) 100%);
+  border: 1.5px solid #8c7653;
+  border-radius: 4px 18px 4px 4px;
+  padding: 24px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 420px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dossier-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.8);
+}
+
+.dossier-card.active-selected {
+  border: 2px solid #a8241c;
+  box-shadow: 0 0 0 2px #a8241c, 0 10px 25px rgba(0, 0, 0, 0.7);
+}
+
+.dossier-tab-top {
+  position: absolute;
+  top: -14px;
+  right: 25px;
+  background: #bfab86;
+  border: 1.5px solid #8c7653;
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  padding: 3px 14px;
+  font-size: 0.72rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #3b2e21;
+}
+
+.dossier-header {
+  border-bottom: 1.5px dashed #7a6344;
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+}
+
+.dossier-code {
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
+  color: #7a2b22;
+  font-weight: bold;
+}
+
+.dossier-title {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #211914;
+  margin: 4px 0;
+  letter-spacing: 1px;
+}
+
+.dossier-meta {
+  font-size: 0.78rem;
+  color: #4a3c2e;
+  line-height: 1.4;
+}
+
+.dossier-body {
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: #2e241c;
+  margin-bottom: 18px;
+  flex: 1;
+}
+
+.dossier-rooms-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.4);
+  padding: 10px 12px;
+  border-radius: 4px;
+  margin-bottom: 18px;
+  font-size: 0.75rem;
+}
+
+.preview-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #382c21;
+}
+
+/* ==========================================================================
+   ACTIVE GAME CASE FILE WORKSPACE & MANILA FOLDER
+   ========================================================================== */
+.desk-workspace {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px 20px 40px;
+  position: relative;
+  z-index: 10;
+  max-width: 1060px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Manila Case Folder Envelope (Houses the Parchment Casefile) */
+.manila-case-folder {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Perfectly Synchronized Folder Tabs Bar */
+.case-folder-tabs {
+  display: flex;
+  width: 100%;
+  gap: 4px;
+  z-index: 20;
+  padding: 0 10px;
+}
+
+.folder-tab {
+  flex: 1 1 0;
+  min-width: 0;
+  font-family: var(--font-typewriter);
+  font-size: 0.82rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  background: #c7af85;
+  color: #3d3124;
+  border: 1.5px solid #856f4e;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  padding: 10px 8px 8px;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3), 0 -2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.15s ease;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.folder-tab:hover:not(.locked) {
+  background: #dbcbab;
+  color: #1a1614;
+  transform: translateY(-2px);
+}
+
+.folder-tab.active {
+  background: var(--parchment);
+  color: var(--ink-black);
+  border-color: #69563c;
+  border-bottom: 3px solid var(--parchment);
+  padding-bottom: 12px;
+  transform: translateY(-2px);
+  z-index: 30;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.folder-tab.locked {
+  background: #a18e72;
+  color: #5c4e3b;
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+.folder-tab .tab-status-icon {
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.folder-tab .tab-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.folder-tab.solved .tab-status-icon {
+  color: var(--stamp-green);
+}
+
+/* Desk Accessories / Floating Props */
+/* Desk Accessories / Floating Props */
+/* Detective Cat Desk Companion & Hint Partner */
+.detective-cat-widget {
+  position: fixed;
+  bottom: 14px;
+  right: 22px;
+  z-index: 920;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  pointer-events: none;
+}
+
+.cat-avatar-btn {
+  pointer-events: auto;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  padding: 4px;
+}
+
+.cat-avatar-btn:hover {
+  transform: translateY(-5px);
+}
+
+.cat-avatar-img {
+  width: 100px;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.75));
+  transition: filter 0.2s ease, transform 0.2s ease;
+  user-select: none;
+}
+
+.cat-desk-shadow {
+  position: absolute;
+  bottom: 22px;
+  width: 70px;
+  height: 12px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 70%);
+  border-radius: 50%;
+  z-index: -1;
+}
+
+/* Desk Nameplate below Inspector Whiskers */
+.cat-nameplate {
+  background: linear-gradient(180deg, #3d2b1c 0%, #20170f 100%);
+  color: #ebd197;
+  border: 1.5px solid #826338;
+  font-family: var(--font-typewriter);
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+  margin-top: -6px;
+  z-index: 2;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.cat-avatar-btn:hover .cat-nameplate {
+  border-color: #d4a957;
+  color: #fff1cc;
+  box-shadow: 0 4px 12px rgba(212, 169, 87, 0.35);
+  transform: scale(1.04);
+}
+
+/* Feline Clue Dispatch (Vintage Manila Field Memo) */
+.cat-speech-bubble {
+  pointer-events: auto;
+  position: absolute;
+  bottom: 140px;
+  right: 0;
+  width: 310px;
+  max-width: calc(100vw - 36px);
+  background: #fbf5e6;
+  border: 2px solid #7c6242;
+  border-radius: 6px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(120, 95, 60, 0.12);
+  padding: 12px 14px;
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(12px) scale(0.96);
+  transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.cat-speech-bubble.open {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Authentic Pointer Stem directly to Cat's coat */
+.cat-speech-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -11px;
+  right: 46px;
+  width: 0;
+  height: 0;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-top: 11px solid #7c6242;
+}
+
+.cat-speech-bubble::before {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  right: 47px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid #fbf5e6;
+  z-index: 1;
+}
+
+.cat-dispatch-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #c9b48f;
+  padding-bottom: 4px;
+}
+
+.cat-dispatch-title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.cat-badge-text {
+  font-family: var(--font-typewriter);
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.6px;
+  color: #692417;
+  white-space: nowrap;
+}
+
+.cat-badge-tag {
+  background: #e6d5b0;
+  color: #4f3c22;
+  font-family: var(--font-typewriter);
+  font-size: 0.58rem;
+  font-weight: bold;
+  padding: 1px 5px;
+  border-radius: 3px;
+  border: 1px solid #b59c6b;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.cat-bubble-close {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: #7d6545;
+  cursor: pointer;
+  padding: 0 4px;
+  transition: color 0.15s ease;
+}
+
+.cat-bubble-close:hover {
+  color: #a8241c;
+}
+
+.cat-dispatch-meta {
+  font-family: var(--font-typewriter);
+  font-size: 0.62rem;
+  color: #7d6545;
+  letter-spacing: 0.8px;
+  border-bottom: 1px dashed #d1c09e;
+  padding-bottom: 4px;
+  margin-top: -2px;
+}
+
+.cat-speech-text {
+  font-family: var(--font-typewriter);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #2b2118;
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid #d4c19d;
+  padding: 8px 10px;
+  border-radius: 4px;
+}
+
+.cat-actions-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.cat-btn {
+  flex: 1;
+  font-family: var(--font-typewriter);
+  font-size: 0.7rem;
+  font-weight: bold;
+  letter-spacing: 0.4px;
+  padding: 7px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 1.5px solid;
+  white-space: nowrap;
+}
+
+.cat-hint-btn {
+  background: #75281a;
+  color: #fff5e0;
+  border-color: #4a140b;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.35);
+}
+
+.cat-hint-btn:hover {
+  background: #913423;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.45);
+}
+
+.cat-pet-btn {
+  background: #ded0ab;
+  color: #3b2c15;
+  border-color: #a18751;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+}
+
+.cat-pet-btn:hover {
+  background: #eee1be;
+  transform: translateY(-1px);
+}
+
+.cat-hints-container {
+  max-height: 130px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 2px;
+}
+
+.cat-hint-card {
+  background: rgba(255, 255, 255, 0.75);
+  border-left: 3px solid #75281a;
+  padding: 5px 8px;
+  font-size: 0.73rem;
+  line-height: 1.35;
+  color: #2e2318;
+  border-radius: 0 3px 3px 0;
+  border-top: 1px solid #e8dec7;
+  border-right: 1px solid #e8dec7;
+  border-bottom: 1px solid #e8dec7;
+}
+
+/* Cat Animations */
+@keyframes cat-bounce-anim {
+  0%, 100% { transform: translateY(0) scale(1); }
+  30% { transform: translateY(-12px) scale(1.06) rotate(-2deg); }
+  60% { transform: translateY(-3px) scale(1.02) rotate(1deg); }
+}
+
+@keyframes cat-purr-anim {
+  0%, 100% { transform: scale(1) rotate(0); }
+  20% { transform: scale(1.03) rotate(-1.5deg); }
+  40% { transform: scale(0.98) rotate(1.5deg); }
+  60% { transform: scale(1.03) rotate(-1deg); }
+  80% { transform: scale(0.99) rotate(1deg); }
+}
+
+.cat-avatar-img.anim-bounce {
+  animation: cat-bounce-anim 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.cat-avatar-img.anim-purr {
+  animation: cat-purr-anim 0.7s ease-in-out;
+}
+
+/* Supervisor Telegram Drawer */
+.supervisor-memo-drawer {
+  position: fixed;
+  bottom: 25px;
+  left: 25px;
+  z-index: 90;
+}
+
+.memo-toggle-btn {
+  background: #f0de8a;
+  color: #3b3215;
+  font-family: var(--font-typewriter);
+  font-size: 0.82rem;
+  font-weight: bold;
+  border: 1px solid #b8a658;
+  border-radius: 4px;
+  padding: 8px 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transform: rotate(-2deg);
+  transition: transform 0.2s ease;
+}
+
+.memo-toggle-btn:hover {
+  transform: rotate(0deg) scale(1.05);
+}
+
+.memo-content-card {
+  position: absolute;
+  bottom: 50px;
+  left: 0;
+  width: 330px;
+  background: #fbf5cd;
+  border: 1px solid #c9b967;
+  padding: 16px 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+  display: none;
+}
+
+.memo-content-card.open {
+  display: block;
+}
+
+.memo-content-card h4 {
+  font-size: 0.88rem;
+  letter-spacing: 1px;
+  color: #695719;
+  border-bottom: 1px dashed #c9b967;
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+}
+
+.hint-entry {
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: #2b2413;
+  margin-bottom: 8px;
+  padding: 6px;
+  background: rgba(255, 255, 255, 0.5);
+  border-left: 3px solid #8c7627;
+}
+
+/* Modals */
+.vintage-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(14, 10, 8, 0.88);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.vintage-modal-backdrop.active {
+  display: flex;
+}
+
+.vintage-modal {
+  background: var(--parchment);
+  border: 2px solid #826e54;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9), inset 0 0 30px rgba(120, 95, 60, 0.2);
+  border-radius: 4px;
+  max-width: 620px;
+  width: 100%;
+  padding: 30px;
+  position: relative;
+  text-align: center;
+}
+
+.vintage-modal h2 {
+  font-family: var(--font-serif);
+  font-size: 1.7rem;
+  color: #2e231c;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.vintage-modal p {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: #383028;
+  margin-bottom: 18px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 860px) {
+  .desk-top-bar {
+    justify-content: center;
+  }
+  .desk-actions {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .case-folder-tabs {
+    padding: 0;
+  }
+  .folder-tab {
+    font-size: 0.72rem;
+    padding: 8px 4px;
+  }
+
+  .detective-cat-widget {
+    right: 10px;
+    bottom: 8px;
+  }
+  .cat-avatar-img {
+    width: 78px;
+  }
+  .cat-desk-shadow {
+    bottom: 18px;
+    width: 55px;
+  }
+  .cat-nameplate {
+    font-size: 0.58rem;
+    padding: 2px 6px;
+  }
+  .cat-speech-bubble {
+    width: 280px;
+    bottom: 120px;
+    right: 0;
+  }
+  .supervisor-memo-drawer {
+    left: 10px;
+    bottom: 10px;
+  }
+  .memo-toggle-btn {
+    font-size: 0.74rem;
+    padding: 6px 10px;
+  }
+}

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 85" width="70" height="85">
+  <defs>
+    <filter id="binder-shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="#140f0d" flood-opacity="0.6"/>
+    </filter>
+    <linearGradient id="brass-wire" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f0d58a"/>
+      <stop offset="40%" stop-color="#fff0bd"/>
+      <stop offset="70%" stop-color="#b88f36"/>
+      <stop offset="100%" stop-color="#694f15"/>
+    </linearGradient>
+    <linearGradient id="body-steel" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#403c39"/>
+      <stop offset="50%" stop-color="#211e1c"/>
+      <stop offset="100%" stop-color="#100e0d"/>
+    </linearGradient>
+  </defs>
+  <!-- Wire handles -->
+  <path d="M 28,32 L 28,12 A 7,7 0 0,1 42,12 L 42,32" fill="none" stroke="url(#brass-wire)" stroke-width="4.5" stroke-linecap="round" filter="url(#binder-shadow)"/>
+  <path d="M 22,34 L 16,18 A 6,6 0 0,1 26,14 L 32,34" fill="none" stroke="url(#brass-wire)" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+  <!-- Clip Body -->
+  <path d="M 10,34 L 60,34 L 54,78 L 16,78 Z" fill="url(#body-steel)" filter="url(#binder-shadow)"/>
+  <!-- Clip Bottom Edge highlight -->
+  <path d="M 12,36 L 58,36" stroke="#5a5450" stroke-width="1.5"/>
+  <path d="M 17,76 L 53,76" stroke="#332f2c" stroke-width="2"/>
+</svg>

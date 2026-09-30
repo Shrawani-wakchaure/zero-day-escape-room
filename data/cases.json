@@ -1,0 +1,41 @@
+{
+  "active_case": "operation_cold_breach",
+  "cases": {
+    "operation_cold_breach": {
+      "id": "operation_cold_breach",
+      "case_number": "CASE-87-0300Z",
+      "incident_name": "OPERATION COLD BREACH",
+      "classification": "TOP SECRET // CYBER FORENSICS ARCHIVE",
+      "compromise_timestamp": "03:00:14 UTC",
+      "location": "Host: cloud-archive-node-09.internal",
+      "threat_type": "Cloud Perimeter Penetration & Host Command Injection",
+      "difficulty": "CLASSICAL FORENSICS ★",
+      "default_timer_seconds": 1200,
+      "briefing": "At 03:00 AM UTC, perimeter intrusion alarms on cloud server node archive-node-09 went dead. The intruder probed administrative directories, bypassed an unhardened IAM policy, initiated a covert encrypted tunnel, and weaponized a utility healthcheck script with command injection. Inspect the evidence, isolate the IP, remediate permissions, decode the tunnel, and patch the zero-day to lock out the adversary."
+    },
+    "phantom_cipher": {
+      "id": "phantom_cipher",
+      "case_number": "CASE-87-0415X",
+      "incident_name": "THE PHANTOM CIPHER",
+      "classification": "TOP SECRET // INDUSTRIAL CRITICAL INFRASTRUCTURE",
+      "compromise_timestamp": "04:15:22 UTC",
+      "location": "SCADA Host: scada-plc-04.watergrid.internal",
+      "threat_type": "Industrial SCADA Traversal & Algorithm Downgrade Attack",
+      "difficulty": "CRITICAL INFRASTRUCTURE ★★",
+      "default_timer_seconds": 1200,
+      "briefing": "At 04:15 AM UTC, industrial telemetry on municipal water pipeline controller scada-plc-04 registered unauthenticated coil override packets. The adversary utilized a rogue industrial gateway, forged an unsigned JWT token, established a legacy weak cipher tunnel, and attempted SQL injection against valve state logs. Your mission: trace the flow log, enforce JWT signature verification, reconstruct modern authenticated encryption, and patch the SQL injection."
+    },
+    "black_ice": {
+      "id": "black_ice",
+      "case_number": "CASE-87-0120B",
+      "incident_name": "BLACK ICE INCIDENT",
+      "classification": "TOP SECRET // FINANCIAL LEDGER COMPROMISE",
+      "compromise_timestamp": "01:20:05 UTC",
+      "location": "Vault Node: vault-db-master.fincorp.internal",
+      "threat_type": "Financial Mainframe Exfiltration & Deserialization RCE",
+      "difficulty": "ADVANCED ZERO-DAY ★★★",
+      "default_timer_seconds": 1200,
+      "briefing": "At 01:20 AM UTC, data loss prevention sensors detected massive ledger exfiltration from database cluster vault-db-master. The attacker probed payment endpoints using blind time-based SQL injection, abused an unrestricted superuser database role, initiated a covert channel, and deployed an untrusted Python pickle deserialization payload. Isolate the intruder, restrict database roles, harden key custody, and patch the deserialization zero-day."
+    }
+  }
+}

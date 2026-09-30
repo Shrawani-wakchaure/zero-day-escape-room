@@ -1,0 +1,342 @@
+/* ==========================================================================
+   CASE FILE & AGED PARCHMENT ARCHIVE DOCUMENT STYLING
+   ========================================================================== */
+
+.parchment-casefile {
+  width: 100%;
+  background-color: var(--parchment);
+  background-image: 
+    radial-gradient(circle at 85% 15%, rgba(189, 155, 102, 0.18) 0%, transparent 60%),
+    radial-gradient(circle at 10% 80%, rgba(158, 126, 79, 0.15) 0%, transparent 55%),
+    radial-gradient(circle at 50% 50%, rgba(255, 250, 235, 0.5) 0%, rgba(224, 209, 180, 0.4) 100%),
+    repeating-linear-gradient(0deg, transparent 0px, transparent 27px, rgba(160, 138, 107, 0.08) 28px);
+  border: 1px solid #b8a587;
+  border-radius: 2px 4px 4px 2px;
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.3),
+    0 15px 35px rgba(18, 13, 10, 0.8),
+    inset 0 0 40px rgba(160, 130, 85, 0.22);
+  position: relative;
+  padding: 35px 45px 50px;
+  min-height: 820px;
+  margin-top: 10px; /* Sits cleanly inside manila folder */
+}
+
+/* Subtle Coffee Ring Stain on Parchment */
+.parchment-casefile::before {
+  content: "";
+  position: absolute;
+  top: 75px;
+  right: 55px;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  border: 3.5px solid rgba(133, 94, 52, 0.12);
+  box-shadow: inset 0 0 15px rgba(133, 94, 52, 0.08), 0 0 8px rgba(133, 94, 52, 0.08);
+  pointer-events: none;
+  opacity: 0.8;
+  transform: rotate(25deg) skewX(5deg);
+}
+
+/* Pinned Polaroid Scene at Top Left (Safely Inside Document, Clear of Tabs!) */
+.pinned-polaroid-container {
+  position: absolute;
+  top: 20px;
+  left: 24px;
+  z-index: 40;
+  transform: rotate(-3.5deg);
+  filter: drop-shadow(3px 5px 7px rgba(0, 0, 0, 0.45));
+  transition: transform 0.2s ease;
+}
+
+.pinned-polaroid-container:hover {
+  transform: rotate(0deg) scale(1.03);
+}
+
+.polaroid-binder-clip {
+  position: absolute;
+  top: -12px;
+  left: 22px;
+  width: 44px;
+  height: 56px;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.polaroid-img-frame {
+  width: 140px;
+  height: 168px;
+  display: block;
+}
+
+/* Document Top Header Section */
+.casefile-header {
+  margin-left: 175px; /* Ample offset for the pinned polaroid */
+  min-height: 110px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 2px solid #5a4b3d;
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+  gap: 15px;
+}
+
+.casefile-title-area {
+  flex: 1;
+}
+
+.casefile-classification-bar {
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  font-weight: bold;
+  color: var(--stamp-red);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.casefile-main-title {
+  font-family: var(--font-serif);
+  font-size: 1.7rem;
+  letter-spacing: 2px;
+  font-weight: 900;
+  color: #211914;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.casefile-sub-heading {
+  font-family: var(--font-typewriter);
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #705542;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* Official Archive Number Box */
+.archive-number-box {
+  border: 1.5px solid #5a4b3d;
+  padding: 6px 14px;
+  text-align: center;
+  background: rgba(230, 215, 185, 0.45);
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
+}
+
+.archive-label {
+  font-size: 0.62rem;
+  letter-spacing: 2px;
+  color: #63503f;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.archive-code {
+  font-family: var(--font-typewriter);
+  font-size: 1.15rem;
+  font-style: italic;
+  font-weight: bold;
+  color: #3b2f25;
+  letter-spacing: 1px;
+}
+
+/* Incident Metadata Block */
+.incident-meta-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  row-gap: 5px;
+  column-gap: 14px;
+  margin-left: 175px;
+  margin-bottom: 22px;
+  font-size: 0.84rem;
+  line-height: 1.35;
+}
+
+.meta-label {
+  font-weight: bold;
+  color: #42352a;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.meta-value {
+  color: #1a1614;
+  font-family: var(--font-typewriter);
+}
+
+/* Objective Notice Callout */
+.evidence-objective-banner {
+  background: rgba(220, 203, 170, 0.45);
+  border-left: 4px solid #6b533e;
+  border-right: 1px dashed #b5a082;
+  padding: 10px 16px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.objective-tag {
+  font-size: 0.7rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #782d24;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.objective-desc {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #2b231c;
+}
+
+/* Document Body Area */
+.casefile-body-content {
+  position: relative;
+  z-index: 10;
+  margin-bottom: 25px;
+}
+
+/* Document Section Dividers */
+.section-divider {
+  display: flex;
+  align-items: center;
+  margin: 18px 0 14px;
+  gap: 12px;
+}
+
+.section-divider-title {
+  font-weight: bold;
+  font-size: 0.78rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #4a3b2f;
+  white-space: nowrap;
+}
+
+.section-divider-line {
+  flex: 1;
+  height: 1px;
+  background: #7d6954;
+  opacity: 0.5;
+}
+
+/* Dedicated Stamp & Endorsement Footer Block (No overlap!) */
+.evidence-status-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 22px;
+  padding-top: 14px;
+  border-top: 1px dashed #c0b095;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.evidence-dispatch-notes {
+  flex: 1;
+  min-width: 260px;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: #3b3026;
+}
+
+.evidence-stamp-slot {
+  flex-shrink: 0;
+  min-width: 220px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* Case File Footer Props (Matches Image 3) */
+.casefile-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 35px;
+  padding-top: 18px;
+  border-top: 1px solid #ab977e;
+  position: relative;
+}
+
+/* Bottom Manila Evidence Tag (Matches Image 3) */
+.bottom-evidence-tag-wrapper {
+  position: relative;
+  transform: rotate(-1.5deg);
+  filter: drop-shadow(2px 3px 5px rgba(0, 0, 0, 0.35));
+  width: 240px;
+}
+
+.evidence-tag-bg {
+  width: 100%;
+  display: block;
+}
+
+.evidence-tag-overlay {
+  position: absolute;
+  top: 18px;
+  left: 65px;
+  right: 15px;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: #3b2c1d;
+}
+
+.evidence-tag-overlay .tag-field {
+  font-weight: bold;
+}
+
+.evidence-tag-overlay .tag-val {
+  font-style: italic;
+}
+
+/* Agency Watermark Stamp at Bottom Right (Matches Image 3) */
+.agency-seal-wrapper {
+  width: 120px;
+  height: 120px;
+  opacity: 0.75;
+  transform: rotate(-8deg);
+  pointer-events: none;
+}
+
+.agency-seal-wrapper img {
+  width: 100%;
+  height: 100%;
+}
+
+/* Background Compass Rose Watermark */
+.bg-compass-watermark {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 200px;
+  height: 200px;
+  opacity: 0.12;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .parchment-casefile {
+    padding: 25px 16px;
+  }
+  .pinned-polaroid-container {
+    position: static;
+    margin: 0 auto 16px;
+  }
+  .casefile-header {
+    margin-left: 0;
+    flex-direction: column;
+  }
+  .incident-meta-grid {
+    margin-left: 0;
+  }
+  .casefile-footer {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+}

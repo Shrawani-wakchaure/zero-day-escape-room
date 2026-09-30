@@ -1,0 +1,126 @@
+<!-- EVIDENCE 03: THE CRYPTO HANDSHAKE (NETWORK SECURITY) -->
+<div id="view-evidence_03" class="evidence-room-view" style="display:none;">
+  <div class="evidence-objective-banner">
+    <div class="objective-tag">NETWORK SECURITY OBJECTIVE // STEP 3 OF 4</div>
+    <div class="objective-desc">
+      {{ puzzles.evidence_03.objective }}
+    </div>
+  </div>
+
+  <div class="blueprint-wrapper">
+    <div class="blueprint-header">
+      <div class="blueprint-title">
+        ⚙️ SECURE TRANSMISSION BLUEPRINT // SPEC-CRYPT-1987
+      </div>
+      <div style="font-size:0.75rem; color:#85b8d9;">
+        NSA SUITE B & FIPS COMPLIANT
+      </div>
+    </div>
+
+    <!-- Schematic Tunnel Wiring Diagram -->
+    <div class="blueprint-diagram">
+      <div class="diagram-node">
+        <div><strong>CLIENT HOST</strong></div>
+        <div style="font-size:0.7rem; color:#79bfe8;">INTRUDER ENDPOINT</div>
+      </div>
+      <div id="diagram-tunnel-line" class="diagram-tunnel-line"></div>
+      <div class="diagram-node">
+        <div><strong>SECURITY GATEWAY</strong></div>
+        <div style="font-size:0.7rem; color:#79bfe8;">COVERT TUNNEL</div>
+      </div>
+      <div class="diagram-tunnel-line"></div>
+      <div class="diagram-node">
+        <div><strong>TARGET NODE</strong></div>
+        <div style="font-size:0.7rem; color:#79bfe8;">INTERNAL ARCHIVE</div>
+      </div>
+    </div>
+
+    <!-- Parameter Selectors Grid (2x2 or 4x1) -->
+    <div class="crypto-grid">
+      <!-- Protocol -->
+      <div class="crypto-param-card">
+        <label class="crypto-param-label" for="crypto-proto">1. {{ puzzles.evidence_03.parameters.protocol.label }}</label>
+        <select id="crypto-proto" class="crypto-select">
+          <option value="">-- Select Protocol --</option>
+          {% for opt in puzzles.evidence_03.parameters.protocol.options %}
+          <option value="{{ opt.value }}">{{ opt.label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Key Exchange -->
+      <div class="crypto-param-card">
+        <label class="crypto-param-label" for="crypto-kex">2. {{ puzzles.evidence_03.parameters.key_exchange.label }}</label>
+        <select id="crypto-kex" class="crypto-select">
+          <option value="">-- Select Key Exchange --</option>
+          {% for opt in puzzles.evidence_03.parameters.key_exchange.options %}
+          <option value="{{ opt.value }}">{{ opt.label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Bulk Cipher -->
+      <div class="crypto-param-card">
+        <label class="crypto-param-label" for="crypto-cipher">3. {{ puzzles.evidence_03.parameters.cipher.label }}</label>
+        <select id="crypto-cipher" class="crypto-select">
+          <option value="">-- Select Cipher --</option>
+          {% for opt in puzzles.evidence_03.parameters.cipher.options %}
+          <option value="{{ opt.value }}">{{ opt.label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- MAC / Hash -->
+      <div class="crypto-param-card">
+        <label class="crypto-param-label" for="crypto-mac">4. {{ puzzles.evidence_03.parameters.mac.label }}</label>
+        <select id="crypto-mac" class="crypto-select">
+          <option value="">-- Select Hash --</option>
+          {% for opt in puzzles.evidence_03.parameters.mac.options %}
+          <option value="{{ opt.value }}">{{ opt.label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <!-- Action Bar with high z-index and clear margin -->
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; position:relative; z-index:20; flex-wrap:wrap; gap:12px;">
+      <span style="font-size:0.75rem; color:#85b8d9;">
+        Note: Deprecated ciphers (RC4, 3DES, MD5, static RSA) fail to establish the secure tunnel.
+      </span>
+      <button id="btn-submit-crypto" class="brass-btn" style="position:relative; z-index:25;">
+        <span>DECRYPT & INTERCEPT TRANSMISSION</span>
+      </button>
+    </div>
+
+    <!-- Decrypted Ticker Output -->
+    <div id="decrypted-transmission-tape" class="decrypted-tape" style="display:none; white-space:pre-wrap;"></div>
+  </div>
+
+  <!-- Dedicated Status & Endorsement Footer (No overlapping!) -->
+  <div class="evidence-status-footer">
+    <div class="evidence-dispatch-notes">
+      <div class="section-divider" style="margin-top:0;">
+        <div class="section-divider-title">CRYPTOGRAPHER'S FIELD NOTEBOOK</div>
+        <div class="section-divider-line"></div>
+      </div>
+      <p style="font-size:0.84rem; line-height:1.6; color:#40352b;">
+        The adversary relied on an encrypted covert tunnel. Legacy protocols and weak stream ciphers fail modern verification. Select modern authenticated encryption (AEAD) and Ephemeral Elliptic Curve Key Exchange (ECDHE for Forward Secrecy) to intercept the payload.
+      </p>
+    </div>
+
+    <div class="evidence-stamp-slot">
+      <div id="stamp-box-evidence_03" class="stamp-slot">
+        {% if session_state.stamps.get('evidence_03') %}
+        <div class="rubber-stamp stamp-green stamp-angle-slight">
+          {{ session_state.stamps.evidence_03.text }}
+        </div>
+        {% else %}
+        <div class="rubber-stamp stamp-red stamp-angle-left">
+          TUNNEL ENCRYPTED
+          <span class="stamp-subtext">C2 STREAM ACTIVE</span>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

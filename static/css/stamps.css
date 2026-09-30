@@ -1,0 +1,110 @@
+/* ==========================================================================
+   VINTAGE RUBBER INK STAMPS & SEALS
+   ========================================================================== */
+
+.rubber-stamp {
+  display: inline-block;
+  font-family: 'Special Elite', 'Courier New', monospace;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 1.15;
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-align: center;
+  position: relative;
+  user-select: none;
+  pointer-events: none;
+  opacity: 0.92;
+  filter: contrast(150%) brightness(95%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Red Security / Breach / Locked Stamps */
+.stamp-red {
+  color: #a8241c;
+  border: 3px solid #a8241c;
+  outline: 1.5px solid #a8241c;
+  outline-offset: -5px;
+  background: rgba(168, 36, 28, 0.06);
+  text-shadow: 0 0 1px rgba(168, 36, 28, 0.6);
+}
+
+/* Green Patched / Resolved Stamps */
+.stamp-green {
+  color: #1e6b36;
+  border: 3px solid #1e6b36;
+  outline: 1.5px solid #1e6b36;
+  outline-offset: -5px;
+  background: rgba(30, 107, 54, 0.08);
+  text-shadow: 0 0 1px rgba(30, 107, 54, 0.6);
+}
+
+/* Blue Classified / Decrypted Stamps */
+.stamp-blue {
+  color: #1d4d75;
+  border: 3px solid #1d4d75;
+  outline: 1.5px solid #1d4d75;
+  outline-offset: -5px;
+  background: rgba(29, 77, 117, 0.06);
+  text-shadow: 0 0 1px rgba(29, 77, 117, 0.6);
+}
+
+/* Stamp Rotations */
+.stamp-angle-left {
+  transform: rotate(-7deg);
+}
+
+.stamp-angle-right {
+  transform: rotate(6deg);
+}
+
+.stamp-angle-slight {
+  transform: rotate(-3deg);
+}
+
+/* Status stamp inside the dedicated stamp slot */
+.stamp-slot .rubber-stamp {
+  font-size: 0.95rem;
+  padding: 8px 16px;
+}
+
+.stamp-subtext {
+  font-size: 0.68rem;
+  display: block;
+  letter-spacing: 2px;
+  margin-top: 3px;
+  font-weight: normal;
+}
+
+/* Small Confidential Box Stamp (Matches Image 3) */
+.stamp-confidential-small {
+  border: 1.5px solid #6b5545;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  color: #523f32;
+  background: transparent;
+  display: inline-block;
+  transform: rotate(1deg);
+}
+
+/* Animated stamp slam effect when validated */
+.stamp-slam-effect {
+  animation: stamp-slam-down 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes stamp-slam-down {
+  0% {
+    opacity: 0;
+    transform: rotate(-14deg) scale(2.2);
+  }
+  70% {
+    opacity: 0.98;
+    transform: rotate(-5deg) scale(0.96);
+  }
+  100% {
+    opacity: 0.92;
+    transform: rotate(-6deg) scale(1);
+  }
+}
